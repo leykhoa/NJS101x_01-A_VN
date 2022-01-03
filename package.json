@@ -4,6 +4,7 @@
   "description": "Example of my",
   "main": "app.js",
   "dependencies": {
+    "express": "^4.17.2",
     "nodemon": "^1.18.3"
   },
   "devDependencies": {},
