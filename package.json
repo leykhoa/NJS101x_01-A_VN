@@ -1,0 +1,24 @@
+{
+  "name": "lab1.2",
+  "version": "1.0.0",
+  "description": "Example of my",
+  "main": "app.js",
+  "dependencies": {
+    "nodemon": "^1.18.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leykhoa/NJS101x_01-A_VN.git"
+  },
+  "author": "khoale",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/leykhoa/NJS101x_01-A_VN/issues"
+  },
+  "homepage": "https://github.com/leykhoa/NJS101x_01-A_VN#readme"
+}
