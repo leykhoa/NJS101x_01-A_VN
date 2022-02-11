@@ -5,14 +5,14 @@
 }
 
 body {
-  padding: 0;
-  margin: 0;
+  padding    : 0;
+  margin     : 0;
   font-family: 'Open Sans', sans-serif;
 }
 
 main {
   padding: 1rem;
-  margin: auto;
+  margin : auto;
 }
 
 form {
@@ -23,36 +23,40 @@ form {
   text-align: center;
 }
 
+.image {
+  height: 20rem;
+}
+
 .main-header {
-  width: 100%;
-  height: 3.5rem;
+  width           : 100%;
+  height          : 3.5rem;
   background-color: #00695c;
-  padding: 0 1.5rem;
-  display: flex;
-  align-items: center;
+  padding         : 0 1.5rem;
+  display         : flex;
+  align-items     : center;
 }
 
 .main-header__nav {
-  height: 100%;
-  display: none;
+  height     : 100%;
+  display    : none;
   align-items: center;
 }
 
 .main-header__item-list {
   list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
+  margin    : 0;
+  padding   : 0;
+  display   : flex;
 }
 
 .main-header__item {
-  margin: 0 1rem;
+  margin : 0 1rem;
   padding: 0;
 }
 
 .main-header__item a {
   text-decoration: none;
-  color: white;
+  color          : white;
 }
 
 .main-header__item a:hover,
@@ -62,16 +66,16 @@ form {
 }
 
 .mobile-nav {
-  width: 30rem;
-  height: 100vh;
-  max-width: 90%;
-  position: fixed;
-  left: 0;
-  top: 0;
+  width     : 30rem;
+  height    : 100vh;
+  max-width : 90%;
+  position  : fixed;
+  left      : 0;
+  top       : 0;
   background: white;
-  z-index: 10;
-  padding: 2rem 1rem 1rem 2rem;
-  transform: translateX(-100%);
+  z-index   : 10;
+  padding   : 2rem 1rem 1rem 2rem;
+  transform : translateX(-100%);
   transition: transform 0.3s ease-out;
 }
 
@@ -80,41 +84,41 @@ form {
 }
 
 .mobile-nav__item-list {
-  list-style: none;
-  display: flex;
+  list-style    : none;
+  display       : flex;
   flex-direction: column;
-  margin: 0;
-  padding: 0;
+  margin        : 0;
+  padding       : 0;
 }
 
 .mobile-nav__item {
-  margin: 1rem;
+  margin : 1rem;
   padding: 0;
 }
 
 .mobile-nav__item a {
   text-decoration: none;
-  color: black;
-  font-size: 1.5rem;
-  padding: 0.5rem 2rem;
+  color          : black;
+  font-size      : 1.5rem;
+  padding        : 0.5rem 2rem;
 }
 
 .mobile-nav__item a:active,
 .mobile-nav__item a:hover,
 .mobile-nav__item a.active {
-  background: #00695c;
-  color: white;
+  background   : #00695c;
+  color        : white;
   border-radius: 3px;
 }
 
 #side-menu-toggle {
-  border: 1px solid white;
-  font: inherit;
-  padding: 0.5rem;
-  display: block;
+  border    : 1px solid white;
+  font      : inherit;
+  padding   : 0.5rem;
+  display   : block;
   background: transparent;
-  color: white;
-  cursor: pointer;
+  color     : white;
+  cursor    : pointer;
 }
 
 #side-menu-toggle:focus {
@@ -123,26 +127,26 @@ form {
 
 #side-menu-toggle:active,
 #side-menu-toggle:hover {
-  color: #ffeb3b;
+  color       : #ffeb3b;
   border-color: #ffeb3b;
 }
 
 .backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
+  position  : fixed;
+  top       : 0;
+  left      : 0;
+  width     : 100%;
+  height    : 100vh;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 5;
-  display: none;
+  z-index   : 5;
+  display   : none;
 }
 
 .grid {
-  display: flex;
-  flex-wrap: wrap;
+  display        : flex;
+  flex-wrap      : wrap;
   justify-content: space-around;
-  align-items: stretch;
+  align-items    : stretch;
 }
 
 .card {
@@ -170,7 +174,7 @@ form {
 }
 
 .card__actions {
-  padding: 1rem;
+  padding   : 1rem;
   text-align: center;
 }
 
@@ -180,32 +184,32 @@ form {
 }
 
 .btn {
-  display: inline-block;
-  padding: 0.25rem 1rem;
+  display        : inline-block;
+  padding        : 0.25rem 1rem;
   text-decoration: none;
-  font: inherit;
-  border: 1px solid #00695c;
-  color: #00695c;
-  background: white;
-  border-radius: 3px;
-  cursor: pointer;
+  font           : inherit;
+  border         : 1px solid #00695c;
+  color          : #00695c;
+  background     : white;
+  border-radius  : 3px;
+  cursor         : pointer;
 }
 
 .btn:hover,
 .btn:active {
   background-color: #00695c;
-  color: white;
+  color           : white;
 }
 
 .btn.danger {
-  color: red;
+  color       : red;
   border-color: red;
 }
 
 .btn.danger:hover,
 .btn.danger:active {
   background: red;
-  color: white;
+  color     : white;
 }
 
 @media (min-width: 768px) {
