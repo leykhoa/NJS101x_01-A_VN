@@ -1,8 +1,6 @@
 const getDb = require('../util/database').getDb;
 const mongodb = require('mongodb');
-const A = () => {
-	helo;
-};
+
 class Product {
 	constructor(title, price, description, imageUrl, id) {
 		(this.title = title),
@@ -25,9 +23,7 @@ class Product {
 		} else {
 			dbOp = db.collection('product').insertOne(this);
 		}
-		return db
-			.collection('products')
-			.insertOne(this)
+		return dbOp
 			.then((result) => {
 				console.log('.>>>>>>>>><<<<<<<<<', result);
 			})
