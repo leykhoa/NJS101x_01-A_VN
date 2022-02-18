@@ -2,12 +2,13 @@ const mongodb = require('mongodb');
 const getDb = require('../util/database').getDb;
 
 class Product {
-	constructor(title, price, description, imageUrl, id) {
-		(this.title = title),
-			(this.price = price),
-			(this.description = description),
-			(this.imageUrl = imageUrl),
-			(this._id = id ? new mongodb.ObjectId(id) : null);
+	constructor(title, price, description, imageUrl, id, userId) {
+		this.title = title;
+		this.price = price;
+		this.description = description;
+		this.imageUrl = imageUrl;
+		this._id = id ? new mongodb.ObjectId(id) : null;
+		this.userId = userId
 	}
 
 	save() {
@@ -18,13 +19,13 @@ class Product {
 				{
 					_id: this._id,
 				},
-				{$set: this}
+				{ $set: this }
 			);
 		} else {
 			dbOp = db.collection("products").insertOne(this);
 		}
 		return dbOp
-			.then(result => {})
+			.then(result => { })
 			.catch((err) => console.log(err));
 	}
 
@@ -45,20 +46,15 @@ class Product {
 		const db = getDb();
 		return db
 			.collection('products')
-			.find({_id: new mongodb.ObjectId(prodId)})
+			.findOne({ _id: new mongodb.ObjectId(prodId) })
 			.next()
-			.then((product) => {
-				console.log(product);
-				return product;
-			})
-			.catch((err) => console.log(err));
 	}
 
 	static deleteByPk(prodId) {
 		const db = getDb();
 		return db
 			.collection('products')
-			.deleteOne({_id: new mongodb.ObjectId(prodId)})
+			.deleteOne({ _id: new mongodb.ObjectId(prodId) })
 			.then((product) => {
 				console.log("Deleted!");
 			})
