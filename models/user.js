@@ -22,9 +22,7 @@ class User {
   }
 
   addToCart(product) {
-    console.log('check cart', this.cart)
     const cartProductIndex = this.cart.items.findIndex(item => {
-      console.log('check item', item)
       return item.productId.toString() === product._id.toString()
     })
     let newQuantity = 1;
@@ -50,6 +48,19 @@ class User {
       )
   }
 
+  getCart() {
+    const db = getDb();
+    const productIds = this.cart.items.map(i => i.productId)
+    return db.collection('products')
+      .find({ _id: { $in: productIds } })
+      .toArray()
+      .then(products => products.map(
+        p => ({
+          ...p, quantity: this.cart.items.find(
+            i => i.productId.toString() === p._id.toString()).quantity
+        }
+        )))
+  }
   static findByPk(userId) {
     const db = getDb();
     return db
