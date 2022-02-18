@@ -47,7 +47,6 @@ class Product {
 		return db
 			.collection('products')
 			.findOne({ _id: new mongodb.ObjectId(prodId) })
-			.next()
 	}
 
 	static deleteByPk(prodId) {
