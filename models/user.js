@@ -22,8 +22,25 @@ class User {
   }
 
   addToCart(product) {
-    // const cartProduct = this.cart.items.findIndex(cp => cp._id === product._id)
-    const updatedCart = { item: [{ productId: new ObjectId(product._id), quantity: 1 }] };
+    console.log('check cart', this.cart)
+    const cartProductIndex = this.cart.items.findIndex(item => {
+      console.log('check item', item)
+      return item.productId.toString() === product._id.toString()
+    })
+    let newQuantity = 1;
+    const updateCartItems = [...this.cart.items]
+
+    if (cartProductIndex >= 0) {
+      newQuantity = this.cart.items[cartProductIndex].quantity + 1;
+      updateCartItems[cartProductIndex].quantity = newQuantity
+    } else {
+      updateCartItems.push({
+        productId: product._id,
+        quantity: newQuantity
+      })
+    }
+
+    const updatedCart = { items: updateCartItems };
     const db = getDb();
     return db
       .collection('users')
