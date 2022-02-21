@@ -1,4 +1,28 @@
-// const mongodb = require('mongodb');
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+const productShema = new Schema({
+    title: {
+        type: String,
+        require: true
+    },
+    price: {
+        type: Number,
+        require: true
+    },
+    description: {
+        type: String,
+        require: true
+    },
+    imageUrl: {
+        type: String,
+        require: true
+    }
+})
+
+module.exports = mongoose.model('Product', productShema)
+
+const mongodb = require('mongodb');
 // const getDb = require('../util/database').getDb;
 
 // class Product {
