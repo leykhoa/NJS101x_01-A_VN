@@ -92,6 +92,7 @@ exports.getProducts = (req, res, next) => {
 	//         console.log(err);
 	//     });
 	Product.find()
+		// .populate('userId')
 		.then((products) => {
 			res.render('admin/products', {
 				prods: products,
@@ -106,7 +107,6 @@ exports.getProducts = (req, res, next) => {
 
 exports.postDeleteProduct = (req, res, next) => {
 	const prodId = req.body.productId;
-	console.log('check ID', prodId)
 	Product.findByIdAndRemove(prodId)
 		.then((result) => {
 			res.redirect('/admin/products');
