@@ -5,17 +5,19 @@ const userSchema = new Schema({
         type: String,
         require: true
     },
-    email:{
+    email: {
         type: String,
         require: true
     },
     cart: {
-        items:[
+        items: [
             {
                 productId: {
-                type: Schema.Types.ObjectId,
-                require: true
-            }},
+                    type: Schema.Types.ObjectId,
+                    require: true,
+                    ref: 'User'
+                }
+            },
             {
                 quatity: {
                     type: Number,
