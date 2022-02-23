@@ -16,7 +16,7 @@ const userSchema = new Schema({
                 productId: {
                     type: Schema.Types.ObjectId,
                     require: true,
-                    ref: 'User'
+                    ref: 'Product'
                 }
                 ,
 
@@ -50,6 +50,8 @@ userSchema.methods.addToCart = function (product) {
     this.cart = updatedCart;
     return this.save()
 }
+
+
 
 module.exports = mongoose.model('User', userSchema);
 
