@@ -96,6 +96,8 @@ exports.getProducts = (req, res, next) => {
 	Product.find()
 		// .populate('userId')
 		.then((products) => {
+			console.log('connect product');
+			console.log(req.isLoggedIn)
 			res.render('admin/products', {
 				prods: products,
 				pageTitle: 'Admin Products',
