@@ -3,14 +3,19 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const session = require('express-session')
+const session = require('express-session');
+const MongoDBStore = require('connect-mongodb-session')(session);
 
 const errorController = require('./controllers/error');
-const User = require('./models/user')
+const User = require('./models/user');
 
-
-
+const MONGODB_URI =
+  'mongodb+srv://khoale:0712@cluster0.xszjz.mongodb.net/shop?retryWrites=true&w=majority';
 const app = express();
+const store = new MongoDBStore({
+  uri: MONGODB_URI,
+  collection: 'sessions',
+});
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
@@ -21,9 +26,14 @@ const authRoutes = require('./routes/auth');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({
-  secret: 'hello world', resave: false, saveUninitialized: false
-}))
+app.use(
+  session({
+    secret: 'hello world',
+    resave: false,
+    saveUninitialized: false,
+    store: store,
+  }),
+);
 
 app.use((req, res, next) => {
   User.findById('621463cef1a9fa8ab91e7612')
@@ -40,7 +50,8 @@ app.use(authRoutes);
 
 app.use(errorController.get404);
 
-mongoose.connect('mongodb+srv://khoale:0712@cluster0.xszjz.mongodb.net/shop?retryWrites=true&w=majority')
+mongoose
+  .connect(MONGODB_URI)
   .then(result => {
     User.findOne().then(user => {
       if (!user) {
@@ -48,13 +59,12 @@ mongoose.connect('mongodb+srv://khoale:0712@cluster0.xszjz.mongodb.net/shop?retr
           name: 'Khoa',
           email: 'test@gmail.com',
           cart: {
-            items: []
-          }
+            items: [],
+          },
         });
         user.save();
       }
-    })
-    app.listen(3000)
+    });
+    app.listen(3000);
   })
-  .catch(err => console.log(err))
-
+  .catch(err => console.log(err));
