@@ -7,7 +7,7 @@ exports.getLogin = (req, res, next) => {
   res.render('auth/login', {
     pageTitle: 'Login',
     path: '/login',
-    isAuthenticated: false
+    errorMessage: req.flash('error')
   });
 };
 
@@ -17,6 +17,7 @@ exports.postLogin = (req, res, next) => {
   User.findOne({ email: email })
     .then(user => {
       if (!user) {
+        req.flash('error', 'Invaid email or password!');
         return res.redirect('/login');
       }
       bcrypt.compare(password, user.password).then(doMatch => {
@@ -39,8 +40,7 @@ exports.getSignup = (req, res, next) => {
   //const isLoggedIn = req.get('cookie').trim().split('=')[1] === 'true';
   res.render('auth/signup', {
     pageTitle: 'Sign Up',
-    path: '/signup',
-    isAuthenticated: false
+    path: '/signup'
   });
 };
 
