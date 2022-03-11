@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
+const { validationResult } = require('express-validator');
 
 // GET, POST Login
 exports.getLogin = (req, res, next) => {
@@ -61,9 +62,18 @@ exports.postSignup = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
   const confirmPassword = req.body.confirmPassword;
+  const errors = validationResult(req);
+  console.log('check errors', errors);
+  if (!errors.isEmpty()) {
+    console.log('errors.array()');
+    return res.status(422).render('auth/signup', {
+      pageTitle: 'Sign Up',
+      path: '/signup',
+      errorMessage: errors.array()
+    });
+  }
   User.findOne({ email: email })
     .then(userDoc => {
-      console.log('check Doc', userDoc);
       if (userDoc) {
         req.flash(
           'error',
