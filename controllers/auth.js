@@ -34,6 +34,7 @@ exports.postLogin = (req, res, next) => {
             res.redirect('/');
           });
         }
+        req.flash('error', 'Invaid email or password!');
         res.redirect('/login');
       });
     })
@@ -42,10 +43,17 @@ exports.postLogin = (req, res, next) => {
 
 //GET, POST SIGN UP
 exports.getSignup = (req, res, next) => {
+  let message = req.flash('error');
+  if (message.length > 0) {
+    message = message[0];
+  } else {
+    message = null;
+  }
   //const isLoggedIn = req.get('cookie').trim().split('=')[1] === 'true';
   res.render('auth/signup', {
     pageTitle: 'Sign Up',
-    path: '/signup'
+    path: '/signup',
+    errorMessage: message
   });
 };
 
@@ -55,7 +63,12 @@ exports.postSignup = (req, res, next) => {
   const confirmPassword = req.body.confirmPassword;
   User.findOne({ email: email })
     .then(userDoc => {
+      console.log('check Doc', userDoc);
       if (userDoc) {
+        req.flash(
+          'error',
+          'Email exists already, please pick a different one!'
+        );
         return res.redirect('/signup');
       }
       return bcrypt
