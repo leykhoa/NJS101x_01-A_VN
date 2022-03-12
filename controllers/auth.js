@@ -1,6 +1,8 @@
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
-const { validationResult } = require('express-validator');
+const {
+  validationResult
+} = require('express-validator/check');
 
 // GET, POST Login
 exports.getLogin = (req, res, next) => {
@@ -13,26 +15,47 @@ exports.getLogin = (req, res, next) => {
   res.render('auth/login', {
     pageTitle: 'Login',
     path: '/login',
-    errorMessage: message
+    errorMessage: message,
+    oldInput: {
+      email: '',
+      password: ''
+    },
+    validationErrors: []
   });
 };
 
 exports.postLogin = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
+
   const errors = validationResult(req);
+  console.log('check errors', errors);
   if (!errors.isEmpty()) {
     return res.status(422).render('auth/login', {
-      pageTitle: 'Login',
       path: '/login',
-      errorMessage: errors.array()[0].msg
+      pageTitle: 'Login',
+      errorMessage: errors.array()[0].msg,
+      oldInput: {
+        email: email,
+        password: password
+      },
+      validationErrors: errors.array()
     });
   }
+
   User.findOne({ email: email })
     .then(user => {
       if (!user) {
-        req.flash('error', 'Invaid email or password!');
-        return res.redirect('/login');
+        return res.status(422).render('auth/login', {
+          path: '/login',
+          pageTitle: 'Login',
+          errorMessage: 'Invalid email or password.',
+          oldInput: {
+            email: email,
+            password: password
+          },
+          validationErrors: []
+        });
       }
       bcrypt
         .compare(password, user.password)
@@ -45,7 +68,19 @@ exports.postLogin = (req, res, next) => {
               res.redirect('/');
             });
           }
-          req.flash('error', 'Invaid email or password!');
+          return res.status(422).render('auth/login', {
+            path: '/login',
+            pageTitle: 'Login',
+            errorMessage: 'Invalid email or password.',
+            oldInput: {
+              email: email,
+              password: password
+            },
+            validationErrors: []
+          });
+        })
+        .catch(err => {
+          console.log(err);
           res.redirect('/login');
         });
     })
@@ -70,7 +105,7 @@ exports.getSignup = (req, res, next) => {
       password: '',
       confirmPassword: ''
     },
-    validationError: ''
+    validationErrors: []
   });
 };
 
@@ -79,6 +114,7 @@ exports.postSignup = (req, res, next) => {
   const password = req.body.password;
   const confirmPassword = req.body.confirmPassword;
   const errors = validationResult(req);
+  console.log('check error', errors);
   if (!errors.isEmpty()) {
     return res.status(422).render('auth/signup', {
       pageTitle: 'Sign Up',
