@@ -1,8 +1,6 @@
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
-const {
-  validationResult
-} = require('express-validator/check');
+const { validationResult } = require('express-validator');
 
 // GET, POST Login
 exports.getLogin = (req, res, next) => {
