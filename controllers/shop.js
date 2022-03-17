@@ -1,5 +1,7 @@
 const Product = require('../models/product');
 const Order = require('../models/order');
+const fs = require('fs');
+const path = require('path');
 
 exports.getProducts = (req, res, next) => {
   Product.find()
@@ -55,6 +57,7 @@ exports.getCart = (req, res, next) => {
     .populate('cart.items.productId')
     .then(user => {
       const products = user.cart.items;
+      console.log('check cart', products);
       res.render('shop/cart', {
         path: '/cart',
         pageTitle: 'Your Cart',
@@ -62,6 +65,7 @@ exports.getCart = (req, res, next) => {
       });
     })
     .catch(err => {
+      console.log('check err', err);
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
@@ -146,4 +150,22 @@ exports.getOrders = (req, res, next) => {
       error.httpStatusCode = 500;
       return next(error);
     });
+};
+
+exports.getInvoice = (req, res, next) => {
+  const orderId = req.params.orderId;
+  const invoiceName = 'invoice' + '-' + orderId + '.pdf';
+  const invoicePath = path.join(
+    'data',
+    'invoices',
+    invoiceName
+  );
+  fs.readFile(invoicePath, (err, data) => {
+    if (err) {
+      console.log('check err', err);
+      return next(err);
+    }
+    console.log('Hello Not Error');
+    res.send(data);
+  });
 };
