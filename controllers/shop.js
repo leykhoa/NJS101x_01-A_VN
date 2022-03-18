@@ -138,7 +138,6 @@ exports.postOrder = (req, res, next) => {
 exports.getOrders = (req, res, next) => {
   Order.find({ 'user.userId': req.user.id })
     .then(orders => {
-      console.log('check orders', orders);
       res.render('shop/orders', {
         path: '/orders',
         pageTitle: 'Your Orders',
@@ -154,6 +153,20 @@ exports.getOrders = (req, res, next) => {
 
 exports.getInvoice = (req, res, next) => {
   const orderId = req.params.orderId;
+  console.log('check orderId', orderId);
+  Order.findById(orderId)
+    .then(order => {
+      if (!order) {
+        return next(new Error('No order found!'));
+      }
+      if (
+        order.user.userId.toString() !==
+        req.user._id.toString()
+      ) {
+        return next(new Error('Unauthorized!'));
+      }
+    })
+    .catch(err => next(err));
   const invoiceName = 'invoice-' + orderId + '.pdf';
   const invoicePath = path.join(
     'data',
