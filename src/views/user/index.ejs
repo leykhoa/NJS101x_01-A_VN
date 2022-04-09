@@ -1,0 +1,148 @@
+<%- include('../includes/head.ejs') %>
+
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+        <% if (user) { %>
+            <div class="container" style="max-width: 800px; padding: 50px">
+            <h3 class="center">Welcome to the information management page</h3>
+            <hr>
+            <div class="row g-0">
+                <div class="col-md-5">
+                    <img src="<%= user.imageUrl %>" class="img-fluid rounded-start" alt="...">
+                </div>
+                <div class="col-md-7 card-body">
+                    <div class="row mb-3">
+                        <label for="name" class="col-sm-2 col-form-label"
+                            >ID</label>
+                        <div class="col-sm-10">
+                            <input
+                            type="text"
+                            class="form-control"
+                            id="name" 
+                            disabled
+                            width="90%"
+                            value="<%= user._id %>"
+                            />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="name" class="col-sm-5 col-form-label">Name</label>
+                        <div class="col-sm-7">
+                            <input
+                            type="text"
+                            class="form-control"
+                            id="name" 
+                            disabled
+                            width="90%"
+                            value="<%= user.name %>"
+                            />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="name" class="col-sm-5 col-form-label">Day of Birth</label>
+                        <div class="col-sm-7">
+                            <input
+                            type="text"
+                            class="form-control"
+                            id="name" 
+                            disabled
+                            width="90%"
+                            value="<%= user.doB !== null ? user.doB.toLocaleDateString('en-GB') : null %>"
+                            />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="name" class="col-sm-5 col-form-label">Start Date</label>
+                        <div class="col-sm-7">
+                            <input
+                            type="text"
+                            class="form-control"
+                            id="name" 
+                            disabled
+                            width="90%"
+                            value="<%= user.startDate !== null ? user.startDate.toLocaleDateString('en-GB') : null %>"
+                            />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="name" class="col-sm-5 col-form-label">Department</label>
+                        <div class="col-sm-7">
+                            <input
+                            type="text"
+                            class="form-control"
+                            id="name" 
+                            disabled
+                            width="90%"
+                            value="<%= user.department %>"
+                            />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="name" class="col-sm-5 col-form-label">Salary Scale</label>
+                        <div class="col-sm-7">
+                            <input
+                            type="text"
+                            class="form-control"
+                            id="name" 
+                            disabled
+                            width="90%"
+                            value="<%= user.salaryScale %>"
+                            />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="name" class="col-sm-5 col-form-label">Annual leave</label>
+                        <div class="col-sm-7">
+                            <input
+                            type="text"
+                            class="form-control"
+                            id="name" 
+                            disabled
+                            width="90%"
+                            value="<%= user.annualLeave %>"
+                            />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="name" class="col-sm-5 col-form-label">Image Url</label>
+                        <div class="col-sm-5" sty>
+                            <input
+                            type="text"
+                            class="form-control"
+                            id="name" 
+                            disabled
+                            value="<%= user.imageUrl %>"
+                            />
+                        </div>
+                        <button type="button" class="btn btn-primary center col-sm-1 style-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+                  
+                  
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <form action="/user/edit-image" method="post">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Edit image Url</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input value="<%= user.imageUrl %>" name="imageUrl">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary btn-sm">Save changes</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+            
+    </body>
+    <%- include('../includes/end.ejs') %>

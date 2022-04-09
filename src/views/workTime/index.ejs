@@ -1,0 +1,109 @@
+<%- include('../includes/head.ejs') %>
+<body>
+  <%- include('../includes/navigation.ejs') %> <% if (attendances[0]) { %>
+  <div class="container">
+    <h4 class="inline-block">
+      Hello <%= attendances[0].user.name %>, here is infomation about your work
+      time. If any question, please contact HR for help
+    </h4>
+    <hr />
+    <div class="container">
+      <div class="row">
+        <div class="col-8">
+          <div class="row">
+            <h4>
+              Your attendance dates and details, please select dates to display
+            </h4>
+            <hr />
+            <form action="/work-time/find-attendance" method="GET">
+              <div class="container">
+                <div class="row">
+                  <div class="col-4" id="select-attendance">
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      onclick="handleSelect2()"
+                    >
+                      Select dates
+                    </button>
+                  </div>
+                  <div class="col-4 display-none" id="calendar">
+                    <input type="text" name="calendar" />
+                  </div>
+                  <div class="col-4 display-none" id="find-attendance">
+                    <button type="submit" class="btn btn-primary">Find</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+            <% attendances.forEach((item, index) => { if
+            (item.timeKeeping[0].startTime && item.timeKeeping[0].endTime) { %>
+            <div class="col-3" style="min-width: 270px">
+              <div class="card customer-card">
+                <p style="color: red">
+                  <b>Date: <%= item.date.toLocaleDateString('en-GB') %></b>
+                </p>
+                <p>
+                  Start working: <%=
+                  item.timeKeeping[0].startTime.toLocaleTimeString() %>
+                </p>
+                <p>
+                  End working: <%= item.timeKeeping[item.timeKeeping.length -
+                  1].endTime ? item.timeKeeping[item.timeKeeping.length -
+                  1].endTime.toLocaleTimeString() :
+                  item.timeKeeping[item.timeKeeping.length - 2].endTime ?
+                  item.timeKeeping[item.timeKeeping.length -
+                  2].endTime.toLocaleTimeString() : null %>
+                </p>
+                <p>
+                  Total working time: <%= item.totalWorkTime ?
+                  item.totalWorkTime : '0' %>
+                </p>
+                <p>Over time: <%= item.overTime ? item.overTime : '0' %></p>
+              </div>
+            </div>
+            <% }}) %>
+          </div>
+        </div>
+        <div class="col-4" style="min-width: 250px">
+          <h4>Information about your Salary</h4>
+          <p>
+            <b>Please select month of year according to you want to display</b>
+          </p>
+          <form action="/work-time" method="GET">
+            <div class="row">
+              <div class="col-5">
+                <select class="form-select" name="month">
+                  <option value="01" selected>January</option>
+                  <option value="02">February</option>
+                  <option value="03">March</option>
+                  <option value="04">April</option>
+                  <option value="05">May</option>
+                  <option value="06">June</option>
+                  <option value="07">July</option>
+                  <option value="08">August</option>
+                  <option value="09">September</option>
+                  <option value="10">October</option>
+                  <option value="11">November</option>
+                  <option value="12">December</option>
+                </select>
+              </div>
+              <div class="col-5">
+                <select class="form-select" name="year">
+                  <option selected value="<%= new Date().getFullYear() %>">
+                    <%= new Date().getFullYear() %>
+                  </option>
+                </select>
+              </div>
+              <div class="col-2">
+                <button type="submit" class="btn btn-primary">Search</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% } %>
+</body>
+<%- include('../includes/end.ejs') %>

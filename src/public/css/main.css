@@ -1,0 +1,98 @@
+.center {
+  text-align: center;
+  margin: auto;
+  display: block;
+  padding: 10px;
+}
+
+.col-form-label {
+  margin: auto;
+}
+
+.input-width {
+  display: inline-block;
+  margin: auto;
+  padding-left: 0;
+  max-width: 50%;
+  min-width: 50px;
+}
+.inline-block {
+  display: inline-block;
+  margin: auto;
+  text-align: center;
+  width: 100%;
+  margin-top: 1rem;
+}
+.card {
+  display: inline-block;
+  padding: 5px;
+}
+
+.col {
+  text-align: center;
+}
+.red {
+  background-color: #dc3545;
+}
+
+.success {
+  background-color: #198754;
+}
+.orange {
+  background-color: orange;
+}
+.danger {
+  background-color: #dc3545;
+  color: black;
+}
+
+.card-body {
+  background-color: white;
+  text-align: left;
+  border-radius: 5px;
+  padding: 5px;
+  min-width: 200px;
+}
+.display-none {
+  display: none;
+}
+.display-show {
+  display: inline-block;
+}
+
+.style-btn {
+  padding: 5px !important;
+}
+
+.active {
+  color: yellow !important;
+  font-weight: bold !important;
+}
+
+.switch-on {
+  background-color: #198754;
+}
+.switch-off {
+  background-color: red;
+}
+.form-check-label {
+  font-weight: bold;
+  color: black;
+}
+.primary {
+  background-color: #0275d8;
+}
+
+.customer-card {
+  padding: 10px;
+  margin: 10px;
+}
+.border-green {
+  border-radius: 5px;
+  border: 2px solid green;
+}
+
+.border-red {
+  border-radius: 5px;
+  border: 2px solid red;
+}
