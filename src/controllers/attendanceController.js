@@ -200,7 +200,15 @@ class AttendanceController {
 									.then(item => res.redirect('/attendance'))
 									.catch(err => console.log(err));
 							} else {
-								res.redirect('/attendance');
+								//Render rejected on leave
+								res.redirect(
+									url.format({
+										pathname: '/attendance',
+										query: {
+											denied: 'no-select',
+										},
+									}),
+								);
 							}
 						}
 					})
@@ -220,6 +228,7 @@ class AttendanceController {
 									newOnLeave.save().catch(err => console.log(err));
 									resolve((req.user.annualLeave -= 1));
 								} else {
+									//Render rejected on leave
 									resolve('no-select');
 								}
 							})
@@ -241,6 +250,7 @@ class AttendanceController {
 							req.user
 								.save()
 								.then(item => {
+									//Render rejected on leave
 									res.redirect(
 										url.format({
 											pathname: '/attendance',
@@ -254,6 +264,7 @@ class AttendanceController {
 						}
 					})
 					.catch(item => {
+						//Render rejected on leave
 						res.redirect(
 							url.format({
 								pathname: '/attendance',
@@ -265,6 +276,7 @@ class AttendanceController {
 					});
 			}
 		} else {
+			//Render rejected on leave
 			res.redirect(
 				url.format({
 					pathname: '/attendance',
