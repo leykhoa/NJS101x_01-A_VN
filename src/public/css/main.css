@@ -105,3 +105,8 @@
 	font-size: 20px;
 	padding: 10px;
 }
+
+hr {
+	border-bottom: 5px solid green;
+	margin: 16px 0 16px 0;
+}

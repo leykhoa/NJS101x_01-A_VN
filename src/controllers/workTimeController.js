@@ -77,14 +77,13 @@ class WorkTimeController {
 		];
 		const preMonth = new Date().getMonth();
 		const year = new Date().getFullYear();
-		const promise = await monthly.slice(0, preMonth).map((monthly, index) => {
+		monthly.slice(0, preMonth).map((monthly, index) => {
 			Salary.findOne({ userId: userId, year: year, month: index })
 				.then(async salary => {
 					//Create new salary if this month have not
 					if (!salary) {
 						let month = monthly;
 						const convert = Methods.convertMonthForSalary(year + '-' + month);
-						console.log('check covert', convert);
 
 						//Find on leave in month (day)
 						const queryOnLeave = OnLeave.find({
@@ -140,16 +139,11 @@ class WorkTimeController {
 							monthlyWorkHours: monthlyWorkHours,
 							salary: Math.max(0, newSalary.toFixed()),
 						});
-						await NewSalary.save()
-							.then(item => console.log(item))
-							.catch(err => console.log(err));
+						await NewSalary.save().catch(err => console.log(err));
 					}
 				})
 				.catch(err => console.log(err));
 		});
-		Promise.all(promise)
-			.then(result => res.redirect('/work-time'))
-			.catch(err => console.log(err));
 	}
 
 	//[GET] /work-time/find-salary ---- a month salary
