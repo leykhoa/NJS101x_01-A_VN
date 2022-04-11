@@ -15,7 +15,7 @@ const attendanceSchema = new Schema({
 		{
 			startTime: { type: Date },
 			endTime: { type: Date },
-			workPlace: { type: String },
+			workPlace: { type: String, default: 'At Company' },
 			hours: { type: Number, default: 0 }, //hours
 		},
 	],

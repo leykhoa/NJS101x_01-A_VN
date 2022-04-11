@@ -17,9 +17,7 @@ class AttendanceController {
 		const currentDate = Methods.currentDate();
 		Attendance.findOne({
 			'user.userId': userId,
-			day: currentDate.day,
-			month: currentDate.month,
-			year: currentDate.year,
+			date: currentDate,
 		})
 			.then(item => {
 				res.render('attendance', {
@@ -40,9 +38,7 @@ class AttendanceController {
 		const currentDate = Methods.currentDate();
 		Attendance.findOne({
 			'user.userId': userId,
-			day: currentDate.day,
-			month: currentDate.month,
-			year: currentDate.year,
+			date: currentDate,
 		})
 			.then(item => {
 				if (!item) {
@@ -52,9 +48,7 @@ class AttendanceController {
 							name: req.user.name,
 							userId: userId,
 						},
-						day: currentDate.day,
-						month: currentDate.month,
-						year: currentDate.year,
+						date: currentDate,
 						timeKeeping: [
 							{
 								startTime: new Date(),
@@ -96,9 +90,7 @@ class AttendanceController {
 		const currentDate = Methods.currentDate();
 		Attendance.findOne({
 			'user.userId': userId,
-			day: currentDate.day,
-			month: currentDate.month,
-			year: currentDate.year,
+			date: currentDate,
 		})
 			.then(item => {
 				if (!item) {
@@ -150,7 +142,10 @@ class AttendanceController {
 					if (sumHours > 8) {
 						item.totalWorkHours = 8;
 						item.overTime = (sumHours - 8).toFixed(1);
-					} else item.totalWorkHours = sumHours.toFixed(1);
+					} else {
+						item.totalWorkHours = sumHours.toFixed(1);
+						item.overTime = 0;
+					}
 					item.save();
 				}
 

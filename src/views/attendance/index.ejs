@@ -56,21 +56,19 @@
 					<div class="col-4">
 						<br />
 						<div class="card-header">
-							<h4 class="center">List of on leave registered</h4>
+							<h4 class="center">List of registered leave</h4>
 						</div>
-						<p>
-							<b style="color: red"
-								>NOTE: Any registration dates that overlap or exceed 8 hours/day
-								will be rejected
-							</b>
-						</p>
 
 						<% if (onLeaveList) { onLeaveList.forEach(item => { %>
 						<p>
 							Date: <%=item.date.toLocaleDateString('en-GB') %> -- Total time:
-							<%=item.day*8 %> hour
+							<%=item.day %> <i>day</i>
 						</p>
-						<%}) }%>
+						<%}) } else {%>
+						<div class="container center" style="color: red">
+							<h3>NO INFORMATION</h3>
+						</div>
+						<% } %>
 					</div>
 				</div>
 			</div>

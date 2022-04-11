@@ -9,7 +9,7 @@
 		<hr />
 		<div class="container">
 			<div class="row">
-				<div class="col-8">
+				<div class="col-7">
 					<div class="row">
 						<h4>
 							Your attendance dates and details, please select dates to display
@@ -18,7 +18,7 @@
 						<form action="/work-time/find-attendance" method="GET">
 							<div class="container">
 								<div class="row">
-									<div class="col-3" id="select-attendance">
+									<div class="col" id="select-attendance">
 										<button
 											type="button"
 											class="btn btn-primary"
@@ -27,14 +27,11 @@
 											Select dates
 										</button>
 									</div>
-									<div class="col-3 display-none" id="calendar">
+									<div class="col display-none" id="calendar">
 										<input type="text" name="calendar" />
 									</div>
-									<div class="col-3 display-none" id="find-attendance">
+									<div class="col display-none" id="find-attendance">
 										<button type="submit" class="btn btn-primary">Find</button>
-									</div>
-									<div class="col-3" id="find-attendance">
-										<p>List attence in</p>
 									</div>
 								</div>
 							</div>
@@ -68,7 +65,7 @@
 						<% }})} %>
 					</div>
 				</div>
-				<div class="col-4" style="min-width: 250px">
+				<div class="col-5" style="min-width: 250px">
 					<h4 class="center">Information about your Salary</h4>
 					<form action="/work-time/salary" method="GET" class="center">
 						<button type="submit" class="btn btn-primary">
@@ -86,7 +83,7 @@
 						<div class="row">
 							<div class="col-5">
 								<select class="form-select" name="month">
-									<option value="01"selected>January</option>
+									<option value="01">January</option>
 									<option value="02">February</option>
 									<option value="03">March</option>
 									<option value="04">April</option>
@@ -123,7 +120,7 @@
 							</p>
 							<p>Total work time: <%= item.totalWorkDays %> days</p>
 							<p>Total on leave: <%= item.totalOnLeave %> days</p>
-							<p>Total over time: <%= item.overtime %> hour</p>
+							<p>Total over time: <%= item.totalOverTime %> hour</p>
 							<p>Salary: <%= item.salary %> VND</p>
 						</div>
 					</div>

@@ -9,47 +9,49 @@
         <hr>
         <h3 class="center">Today is <%= new Date().toLocaleDateString('en-GB') %></h3>
         <hr>
-            <div class="row g-3 ">
-              <form action="/attendance/start-working" class="col-6 center" method="post">
+        <div class="container">
+            <div class="row row-cols-2 ">
+              <form action="/attendance/start-working" class="col-6 center " method="post">
                 <button
                 type="submit"
-                class="btn btn-success <%= user.workStatus === true ? 'display-none' : '' %>"
+                class="button-design switch-on <%= user.workStatus === true ? 'display-none' : '' %>"
               >
-                CHECK IN
+                CHECK IN (At Company)
               </button>
               <button
                 type="submit"
-                class="btn btn-danger <%= user.workStatus === false ? 'display-none' : '' %>"
+                class="button-design danger <%= user.workStatus === false ? 'display-none' : '' %>"
                 formaction="/attendance/end-working"
               >
                 CHECK OUT
               </button>
               </form>
-              <form action="/covid" class="col-6 center">
+              <form action="/covid" class="col-6 center ">
                 <button
                 type="submit"
-                class="btn btn-info "
+                class="button-design primary "
               >
                 COVID-19 INFORMATION
               </button>
               </form>
-              <form action="/user" class="col-6 center">
+              <form action="/user" class="col-6 center  ">
                 <button
                 type="submit"
-                class="btn btn-success "
+                class="button-design primary"
               >
                 YOUR PROFILE
               </button>
               </form>
-              <form action="/work-time" class="col-6 center">
+              <form action="/work-time" class="col-6 center ">
                 <button
                 type="submit"
-                class="btn btn-success "
+                class="button-design primary"
               >
                 YOUR WORK TIME AND SALARY
               </button>
               </form>
             </div>
+          </div>
           </div>
             
 

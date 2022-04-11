@@ -10,10 +10,11 @@ class Methods {
 	}
 
 	currentDate() {
-		const current = {};
-		current.day = new Date().getDate();
-		current.month = new Date().getMonth();
-		current.year = new Date().getFullYear();
+		const current = moment(
+			new Date().toISOString().slice(0, 10),
+			'YYYY-MM-DD',
+		).format('YYYY-MM-DD');
+		console.log('check date', current);
 		return current;
 	}
 
@@ -30,7 +31,6 @@ class Methods {
 		const start = moment(day.slice(0, 10), 'YYYY-MM-DD');
 		const end = moment(day.slice(13, 23), 'YYYY-MM-DD');
 		const days = moment.duration(end.diff(start)).asDays();
-		console.log('check days', days);
 
 		//check current month -- did not apply for last month's leave because of salary calculation
 		const currentMonth = new Date().getMonth() + 1;
@@ -41,7 +41,7 @@ class Methods {
 		);
 
 		const notSelectPreMonth = moment.duration(start.diff(limitMonth)).asDays();
-
+		let leaveDay = 0;
 		let dates = [];
 		if (notSelectPreMonth > 0) {
 			if (day.length === 10 && start.day() !== 0 && start.day() !== 6) {

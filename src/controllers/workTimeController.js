@@ -16,11 +16,11 @@ class WorkTimeController {
 		const salary = await querySalary;
 
 		Attendance.find({ 'user.userId': userId })
-			.then(item => {
+			.then(attendance => {
 				res.render('workTime', {
 					path: '/work-time',
 					pageTitle: 'Work Time',
-					attendances: item,
+					attendances: attendance,
 					salary: salary,
 				});
 			})
@@ -31,7 +31,7 @@ class WorkTimeController {
 	async findAttendance(req, res, next) {
 		const userId = req.user._id;
 		const dates = req.query.calendar;
-		let convert = Methods.convertDate(dates);
+		const convert = Methods.convertDate(dates);
 
 		const querySalary = Salary.find({
 			userId: userId,
@@ -47,11 +47,11 @@ class WorkTimeController {
 			'user.userId': userId,
 			date: { $gte: convert.start, $lte: convert.end },
 		})
-			.then(item =>
+			.then(attendance =>
 				res.render('workTime', {
 					path: '/work-time',
 					pageTitle: 'Work Time',
-					attendances: item,
+					attendances: attendance,
 					salary: salary,
 				}),
 			)
@@ -77,25 +77,22 @@ class WorkTimeController {
 		];
 		const preMonth = new Date().getMonth();
 		const year = new Date().getFullYear();
-		monthly.slice(0, preMonth).map((monthly, index) => {
+		const promise = await monthly.slice(0, preMonth).map((monthly, index) => {
 			Salary.findOne({ userId: userId, year: year, month: index })
 				.then(async salary => {
 					//Create new salary if this month have not
 					if (!salary) {
 						let month = monthly;
 						const convert = Methods.convertMonthForSalary(year + '-' + month);
+						console.log('check covert', convert);
 
 						//Find on leave in month (day)
 						const queryOnLeave = OnLeave.find({
 							userId: userId,
 							date: { $gte: convert.start, $lte: convert.end },
-						}).catch(err => console.log(err));
+						});
 						queryOnLeave instanceof mongoose.Query;
 						const listOnLeave = await queryOnLeave;
-						const totalOnLeave = listOnLeave.reduce(
-							(pre, item) => pre + item.day,
-							0,
-						); //Day
 
 						//Find attendance in month
 						const queryAttendance = Attendance.find({
@@ -104,44 +101,55 @@ class WorkTimeController {
 						});
 						queryAttendance instanceof mongoose.Query;
 						const attendance = await queryAttendance;
+						console.log('check total attendance', attendance);
+
+						//Get total on leave in month (day)
+						const totalOnLeave = listOnLeave.reduce(
+							(pre, item) => pre + item.day,
+							0,
+						);
 
 						//Get total work time in month (hour)
-						const totalWorkHoursOfMonth = attendance.reduce(
+						const totalWorkHoursOfMonth = await attendance.reduce(
 							(pre, item) => pre + item.totalWorkHours,
 							0,
 						);
-						console.log('check total work time', totalWorkHoursOfMonth);
+
 						//Get total over time in month (hour)
-						const overTimeOfMonth = attendance.reduce(
-							(pre, item) => pre + item.overTime,
-							0,
-						);
-						console.log('check total over time', overTimeOfMonth);
+						const overTimeOfMonth = await attendance.reduce((pre, item) => {
+							console.log('check pre', pre + '---' + item.overTime);
+							return pre + item.overTime;
+						}, 0);
+						console.log('check tatal over time', overTimeOfMonth);
 
 						//Get total monthly work time in month (hour)
-						const workHoursOfMonth = +convert.workDays * 8;
-						console.log('check total worktime', workHoursOfMonth);
+						const monthlyWorkHours = +convert.workDays * 8;
 
 						const newSalary =
 							req.user.salaryScale * 3000000 +
 							(overTimeOfMonth -
-								(workHoursOfMonth - totalWorkHoursOfMonth - totalOnLeave * 8)) *
+								(monthlyWorkHours - totalWorkHoursOfMonth - totalOnLeave * 8)) *
 								200000;
 						const NewSalary = new Salary({
 							userId: userId,
 							year: Number(year),
 							month: Number(month) - 1,
-							totalOnLeave: totalOnLeave,
-							totalWorkDays: totalWorkHoursOfMonth / 8,
+							totalOnLeave: totalOnLeave * 8,
+							totalWorkHours: totalWorkHoursOfMonth,
 							totalOverTime: overTimeOfMonth,
-							salary: Math.max(0, newSalary),
+							monthlyWorkHours: monthlyWorkHours,
+							salary: Math.max(0, newSalary.toFixed()),
 						});
-						await NewSalary.save().catch(err => console.log(err));
+						await NewSalary.save()
+							.then(item => console.log(item))
+							.catch(err => console.log(err));
 					}
 				})
 				.catch(err => console.log(err));
 		});
-		res.redirect('/work-time');
+		Promise.all(promise)
+			.then(result => res.redirect('/work-time'))
+			.catch(err => console.log(err));
 	}
 
 	//[GET] /work-time/find-salary ---- a month salary
@@ -161,12 +169,12 @@ class WorkTimeController {
 		Salary.find({
 			userId: userId,
 			year: year,
-			month: month,
-		}).then(item => {
+			month: month - 1,
+		}).then(salary => {
 			res.render('workTime', {
 				path: '/work-time',
 				pageTitle: 'Work Time',
-				salary: item,
+				salary: salary,
 				attendances: attendance,
 			});
 		});
