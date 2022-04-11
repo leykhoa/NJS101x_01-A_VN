@@ -5,6 +5,7 @@ class HomeController {
 		res.render('home', {
 			path: '/',
 			pageTitle: 'Home',
+			user: req.user,
 		});
 	}
 }

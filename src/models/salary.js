@@ -6,15 +6,12 @@ const salarySchema = new Schema({
 		required: true,
 		ref: 'User',
 	},
-	year: { types: Number },
-	month: [
-		{
-			totalDays: { types: Number },
-			workingDay: { types: Number },
-			overTime: { types: Number },
-			totalLeave: { types: Number },
-		},
-	],
+	year: { type: Number },
+	month: { type: Number },
+	totalOnLeave: { type: Number, default: 0 }, // day
+	totalWorkDays: { type: Number }, // day
+	totalOverTime: { type: Number, default: 0 }, //hour
+	salary: { type: Number }, //VND
 });
 
 module.exports = mongoose.model('Salary', salarySchema);

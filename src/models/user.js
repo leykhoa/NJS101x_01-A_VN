@@ -32,7 +32,6 @@ const userSchema = new Schema({
 	},
 	workStatus: { type: Boolean, default: false },
 	missEndWorking: { type: Boolean, default: false },
-	allowLeave: { type: Boolean, default: true },
 });
 
 module.exports = mongoose.model('User', userSchema);

@@ -1,6 +1,7 @@
 const CovidInfo = require('../models/covidInfo');
 
 class CovidController {
+	//[GET] /covid
 	index(req, res, next) {
 		const userId = req.user._id;
 		CovidInfo.findOne({ 'user.userId': userId })
@@ -31,7 +32,7 @@ class CovidController {
 			.catch(err => console.log(err));
 	}
 
-	//[POST] body temperature
+	//[POST] /covid/body-temperature
 	bodyTemperature(req, res, next) {
 		const measurement = {
 			temperature: req.body.temperature,
@@ -39,18 +40,17 @@ class CovidController {
 			time: req.body.time,
 		};
 		const userId = req.user._id;
-		CovidInfo.findOne({ 'user.userId': userId }).then(
-			item => {
-				item.bodyTemperature.push(measurement);
-				item
-					.save()
-					.then(user => res.redirect('/covid'))
-					.catch(err => console.log(err));
-			},
-		);
+		CovidInfo.findOne({ 'user.userId': userId }).then(item => {
+			//create list of body temperature
+			item.bodyTemperature.push(measurement);
+			item
+				.save()
+				.then(user => res.redirect('/covid'))
+				.catch(err => console.log(err));
+		});
 	}
 
-	//[POST] vaccine information
+	//[POST] /covid/vaccine
 	vaccineInfo(req, res, next) {
 		const userId = req.user._id;
 		CovidInfo.findOne({ 'user.userId': userId })
@@ -63,7 +63,7 @@ class CovidController {
 					secondDoseDate: req.body.secondDoseDate,
 					secondDosePlace: req.body.secondDoseDate,
 				};
-
+				//create a object of vaccine infomation
 				item
 					.save()
 					.then(user => res.redirect('/covid'))
@@ -83,6 +83,8 @@ class CovidController {
 					date: req.body.date,
 					symptoms: req.body.symptoms,
 				};
+
+				//create only one covid infomation
 				item
 					.save()
 					.then(user => {
@@ -93,6 +95,7 @@ class CovidController {
 			.catch(err => console.log(err));
 	}
 
+	//[POST] negative Covid-19
 	negativeCovid(req, res, next) {
 		const userId = req.user._id;
 		CovidInfo.findOne({ 'user.userId': userId })

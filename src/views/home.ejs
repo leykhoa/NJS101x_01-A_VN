@@ -2,8 +2,55 @@
     <link rel="stylesheet" href="css/main.css">
     </head>
     <body>
-
         <%- include('./includes/navigation.ejs') %>
+        <div class="container" style="padding: 5rem">
+            <h1>Welcome to MY COMPANY, let choice action that you want to do! (Don't forget to attendance!)</h1>
+
+        <hr>
+        <h3 class="center">Today is <%= new Date().toLocaleDateString('en-GB') %></h3>
+        <hr>
+            <div class="row g-3 ">
+              <form action="/attendance/start-working" class="col-6 center" method="post">
+                <button
+                type="submit"
+                class="btn btn-success <%= user.workStatus === true ? 'display-none' : '' %>"
+              >
+                CHECK IN
+              </button>
+              <button
+                type="submit"
+                class="btn btn-danger <%= user.workStatus === false ? 'display-none' : '' %>"
+                formaction="/attendance/end-working"
+              >
+                CHECK OUT
+              </button>
+              </form>
+              <form action="/covid" class="col-6 center">
+                <button
+                type="submit"
+                class="btn btn-info "
+              >
+                COVID-19 INFORMATION
+              </button>
+              </form>
+              <form action="/user" class="col-6 center">
+                <button
+                type="submit"
+                class="btn btn-success "
+              >
+                YOUR PROFILE
+              </button>
+              </form>
+              <form action="/work-time" class="col-6 center">
+                <button
+                type="submit"
+                class="btn btn-success "
+              >
+                YOUR WORK TIME AND SALARY
+              </button>
+              </form>
+            </div>
+          </div>
             
 
     </body>

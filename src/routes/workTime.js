@@ -1,14 +1,14 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
 
-const workTimeController = require("../controllers/workTimeController");
+const workTimeController = require('../controllers/workTimeController');
 
-router.get("/search", workTimeController.search);
+router.get('/salary', workTimeController.salary);
 
-router.get("/find-salary", workTimeController.findSalary);
+router.get('/find-salary', workTimeController.findSalary);
 
-router.get("/find-attendance", workTimeController.findAttendance);
+router.get('/find-attendance', workTimeController.findAttendance);
 
-router.get("/", workTimeController.index);
+router.get('/', workTimeController.index);
 
 module.exports = router;

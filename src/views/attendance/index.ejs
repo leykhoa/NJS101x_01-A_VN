@@ -1,73 +1,81 @@
 <%- include('../includes/head.ejs') %>
 <body>
-  <%- include('../includes/navigation.ejs') %> <% if (user) { %>
-  <div class="container-sm align-top">
-    <h2 class="center">ATTENDANCE</h2>
-    <hr />
+	<%- include('../includes/navigation.ejs') %> <% if (user) { %>
+	<div class="container-sm align-top">
+		<h2 class="center">ATTENDANCE</h2>
+		<hr />
 
-    <div class="container">
-      <h5>
-        Hi, <b><%= user.name %></b>, please check infomation and click button
-        below to start your work
-      </h5>
-      <%- include('./onLeave') %>
-      <form action="/attendance/start-working" method="POST">
-        <%- include('./startWorking') %>
-        <hr />
-        <button
-          type="submit"
-          class="btn btn-success <%= user.workStatus === true ? 'display-none' : '' %>"
-        >
-          CHECK IN
-        </button>
-        <button
-          type="submit"
-          class="btn btn-danger <%= user.workStatus === false ? 'display-none' : '' %>"
-          formaction="/attendance/end-working"
-        >
-          CHECK OUT
-        </button>
-        <button
-          class="btn btn-secondary"
-          type="button"
-          data-bs-toggle="modal"
-          data-bs-target="#onLeave"
-        >
-          On leave
-        </button>
-      </form>
-      <% if (user.missEndWorking === true) { %>
-      <div class="container center" style="color: red">
-        <h3>
-          You missed CHECK OUT of the previous day, please contact HR for help
-        </h3>
-      </div>
-      <% } %>
-      <div class="container">
-        <div class="row">
-          <div class="col-8"><%- include('./endWorking') %></div>
-          <div class="col-4">
-            <div class="card-header">
-              <h4 class="center">List of on leave registered</h4>
-            </div>
-            <p>
-              <b style="color: red"
-                >NOTE: Any registration dates that overlap or exceed 8 hours/day
-                will be rejected
-              </b>
-            </p>
+		<div class="container">
+			<h5>
+				Hi, <b><%= user.name %></b>, please check infomation and click button
+				below to start your work
+			</h5>
+			<%- include('./onLeave') %>
+			<form action="/attendance/start-working" method="POST">
+				<%- include('./startWorking') %>
+				<hr />
+				<button
+					type="submit"
+					class="btn btn-success <%= user.workStatus === true ? 'display-none' : '' %>"
+				>
+					CHECK IN
+				</button>
+				<button
+					type="submit"
+					class="btn btn-danger <%= user.workStatus === false ? 'display-none' : '' %>"
+					formaction="/attendance/end-working"
+				>
+					CHECK OUT
+				</button>
+				<button
+					class="btn btn-secondary"
+					type="button"
+					data-bs-toggle="modal"
+					data-bs-target="#onLeave"
+				>
+					On leave
+				</button>
+				<button
+					class="btn btn-danger inline-block <%= req.query.denied !== 'no-select' ? 'display-none' : '' %>"
+				>
+					Please check the list of leave applications again, because some of the
+					days you applied for already exist or fall on a Saturday or Sunday or
+					select more than the allowed number of days
+				</button>
+			</form>
+			<% if (user.missEndWorking === true) { %>
+			<div class="container center" style="color: red">
+				<h3>
+					You missed CHECK OUT of the previous day, please contact HR for help
+				</h3>
+			</div>
+			<% } %>
+			<div class="container">
+				<div class="row">
+					<div class="col-8"><%- include('./endWorking') %></div>
+					<div class="col-4">
+						<br />
+						<div class="card-header">
+							<h4 class="center">List of on leave registered</h4>
+						</div>
+						<p>
+							<b style="color: red"
+								>NOTE: Any registration dates that overlap or exceed 8 hours/day
+								will be rejected
+							</b>
+						</p>
 
-            <% if (onLeaveList) { onLeaveList.forEach(item => { %>
-            <p>
-              Date: <%=item.date.toLocaleDateString('en-GB') %> -- Total time:
-              <%=item.day*8 %> hour
-            </p>
-            <%}) }%>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <% } %>
+						<% if (onLeaveList) { onLeaveList.forEach(item => { %>
+						<p>
+							Date: <%=item.date.toLocaleDateString('en-GB') %> -- Total time:
+							<%=item.day*8 %> hour
+						</p>
+						<%}) }%>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<% } %>
 </body>
 <%- include('../includes/end.ejs') %>
