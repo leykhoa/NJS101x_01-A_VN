@@ -13,16 +13,11 @@ class UserController {
 
 	// [GET] /user
 	index(req, res, next) {
-		req.user
-			.save()
-			.then(user => {
-				res.render('user', {
-					user: req.user,
-					path: '/user',
-					pageTitle: 'User Infomation',
-				});
-			})
-			.catch(err => console.log(err));
+		res.render('user', {
+			user: req.user,
+			path: '/user',
+			pageTitle: 'User Infomation',
+		});
 	}
 }
 module.exports = new UserController();

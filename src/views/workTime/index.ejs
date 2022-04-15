@@ -7,6 +7,7 @@
 			contact HR for help
 		</h4>
 		<hr />
+		<% if (user) { %>
 		<div class="container">
 			<div class="row">
 				<div class="col-7">
@@ -148,6 +149,20 @@
 				</div>
 			</div>
 		</div>
+		<% } else { %>
+			<h1 class="center">
+                    Please
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        data-bs-toggle="modal"
+                        data-bs-target="#login"
+                    >
+                        LOGIN
+                    </button>
+                    to display infomation
+                </h1>
+                <% } %>
 	</div>
 </body>
 <%- include('../includes/end.ejs') %>

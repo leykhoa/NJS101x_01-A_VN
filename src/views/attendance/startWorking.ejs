@@ -33,6 +33,7 @@
 		</div>
 	</div>
 </div>
+<% if (user) { %>
 <h4
 	class="form-check form-switch display-none <%= user.workStatus === true ? 'display-show' : 'display-none' %>"
 	id="working"
@@ -58,3 +59,4 @@
 	/>
 	<label class="form-check-label" for="working"> Disabled working</label>
 </h4>
+<% } %>

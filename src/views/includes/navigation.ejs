@@ -48,6 +48,29 @@
 						</a>
 					</li>
 				</ul>
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+					<li class="nav-item">
+						<a
+							class="nav-link <%= path ==='/login' ? 'active': '' %> <%= user ? 'display-none' : '' %>"
+							href="/auth/login"
+							>Login
+						</a>
+					</li>
+					<li class="nav-item">
+						<a
+							class="nav-link <%= path ==='/logout' ? 'active': '' %> <%= !user ? 'display-none' : '' %>"
+							href="/auth/logout"
+							>Logout
+						</a>
+					</li>
+					<li class="nav-item">
+						<a
+							class="nav-link <%= path ==='/signup' ? 'active': '' %>"
+							href="/auth/signup"
+							>Sign Up
+						</a>
+					</li>
+				</ul>
 			</div>
 		</div>
 	</nav>

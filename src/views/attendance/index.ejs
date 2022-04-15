@@ -1,10 +1,10 @@
 <%- include('../includes/head.ejs') %>
 <body>
-	<%- include('../includes/navigation.ejs') %> <% if (user) { %>
+	<%- include('../includes/navigation.ejs') %>
 	<div class="container-sm align-top">
 		<h2 class="center">ATTENDANCE</h2>
 		<hr />
-
+		<% if (user) { %>
 		<div class="container">
 			<h5>
 				Hi, <b><%= user.name %></b>, please check infomation and click button
@@ -53,27 +53,37 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-8"><%- include('./endWorking') %></div>
+					<% if (onLeaveList.length >0) { %>
 					<div class="col-4">
 						<br />
 						<div class="card-header">
 							<h4 class="center">List of registered leave</h4>
 						</div>
-
-						<% if (onLeaveList) { onLeaveList.forEach(item => { %>
+						<% onLeaveList.forEach(item => { %>
 						<p>
 							Date: <%=item.date.toLocaleDateString('en-GB') %> -- Total time:
 							<%=item.day %> <i>day</i>
 						</p>
-						<%}) } else {%>
-						<div class="container center" style="color: red">
-							<h3>NO INFORMATION</h3>
-						</div>
-						<% } %>
+						<% }) %>
 					</div>
+					<% } %>
 				</div>
 			</div>
 		</div>
+		<% } else { %>
+		<h3 class="center">
+			Please
+			<button
+				type="button"
+				class="btn btn-primary"
+				data-bs-toggle="modal"
+				data-bs-target="#login"
+			>
+				LOGIN
+			</button>
+			to display infomation
+		</h3>
+		<% } %>
 	</div>
-	<% } %>
 </body>
 <%- include('../includes/end.ejs') %>

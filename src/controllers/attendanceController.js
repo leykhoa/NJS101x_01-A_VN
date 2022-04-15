@@ -16,7 +16,7 @@ class AttendanceController {
 		const list = await queryOnLeave;
 		const currentDate = Methods.currentDate();
 		Attendance.findOne({
-			'user.userId': userId,
+			userId: userId,
 			date: currentDate,
 		})
 			.then(item => {
@@ -37,17 +37,14 @@ class AttendanceController {
 		const userId = req.user._id;
 		const currentDate = Methods.currentDate();
 		Attendance.findOne({
-			'user.userId': userId,
+			userId: userId,
 			date: currentDate,
 		})
 			.then(item => {
 				if (!item) {
 					// Create new CHECK OUT for new day
 					const attendance = new Attendance({
-						user: {
-							name: req.user.name,
-							userId: userId,
-						},
+						userId: userId,
 						date: currentDate,
 						timeKeeping: [
 							{
@@ -89,7 +86,7 @@ class AttendanceController {
 		const userId = req.user._id;
 		const currentDate = Methods.currentDate();
 		Attendance.findOne({
-			'user.userId': userId,
+			userId: userId,
 			date: currentDate,
 		})
 			.then(item => {

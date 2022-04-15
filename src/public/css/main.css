@@ -110,3 +110,27 @@ hr {
 	border-bottom: 5px solid green;
 	margin: 16px 0 16px 0;
 }
+
+.scroll {
+	min-width: 250px;
+	height: 250px;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+.small {
+	max-width: 40%;
+	margin: auto 30%;
+	padding: 120px;
+	font-size: 20px;
+}
+
+.error {
+	border: 2px solid red;
+	text-align: center;
+	margin-bottom: 20px;
+	padding: 5px;
+	border-radius: 5px;
+	background-color: rgba(118, 207, 232, 0.81);
+	color: red;
+}

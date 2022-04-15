@@ -15,13 +15,14 @@ class WorkTimeController {
 		querySalary instanceof mongoose.Query;
 		const salary = await querySalary;
 
-		Attendance.find({ 'user.userId': userId })
+		Attendance.find({ userId: userId })
 			.then(attendance => {
 				res.render('workTime', {
 					path: '/work-time',
 					pageTitle: 'Work Time',
 					attendances: attendance,
 					salary: salary,
+					user: req.user,
 				});
 			})
 			.catch(err => console.log(err));
@@ -44,7 +45,7 @@ class WorkTimeController {
 		querySalary instanceof mongoose.Query;
 		const salary = await querySalary;
 		Attendance.find({
-			'user.userId': userId,
+			userId: userId,
 			date: { $gte: convert.start, $lte: convert.end },
 		})
 			.then(attendance =>

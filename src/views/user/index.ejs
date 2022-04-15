@@ -4,7 +4,7 @@
         <%- include('../includes/navigation.ejs') %>
         <% if (user) { %>
             <div class="container" style="max-width: 800px; padding: 50px">
-            <h3 class="center">Welcome to the information management page</h3>
+            <h3 class="center">Welcome to the information management</h3>
             <hr>
             <div class="row g-0">
                 <div class="col-md-5">
@@ -120,7 +120,20 @@
                     </div>
                 </div>
             </div>
-        <% } %>
+        <% }  else {%>
+            <h1 class="center">
+                Please
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    data-bs-toggle="modal"
+                    data-bs-target="#login"
+                >
+                    LOGIN
+                </button>
+                to display infomation
+            </h1>
+            <% } %>
                   
                   
         <!-- Modal -->

@@ -10,6 +10,7 @@ const userSchema = new Schema({
 		type: String,
 		require: true,
 	},
+	password: { type: String, require: true },
 	doB: {
 		type: Date,
 		require: true,

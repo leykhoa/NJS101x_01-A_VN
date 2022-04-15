@@ -2,15 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const covidSchema = new Schema({
-	user: {
-		name: { type: String, required: true },
-		userId: {
-			type: Schema.Types.ObjectId,
-			required: true,
-			ref: 'User',
-		},
+	userId: {
+		type: Schema.Types.ObjectId,
+		required: true,
+		ref: 'User',
 	},
-
 	covidInfection: {
 		testMethod: { type: String },
 		date: { type: Date },

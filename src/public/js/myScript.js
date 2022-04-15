@@ -72,3 +72,8 @@ function handleSelect2() {
 		});
 	}
 }
+
+function toggleModal() {
+	let myModalEl = document.getElementById('myModal');
+	myModalEl.addEventListener('show.bs.modal');
+}

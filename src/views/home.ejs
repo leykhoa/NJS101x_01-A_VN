@@ -10,6 +10,7 @@
         <h3 class="center">Today is <%= new Date().toLocaleDateString('en-GB') %></h3>
         <hr>
         <div class="container">
+          <% if (user) { %>
             <div class="row row-cols-2 ">
               <form action="/attendance/start-working" class="col-6 center " method="post">
                 <button
@@ -52,6 +53,7 @@
               </form>
             </div>
           </div>
+          <%}%>
           </div>
             
 
