@@ -58,7 +58,7 @@ app.use((req, res, next) => {
 //Routes init
 route(app);
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3000;
 
 mongoose
 	.connect(MONGODB_URI)
