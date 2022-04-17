@@ -31,6 +31,14 @@ const userSchema = new Schema({
 	imageUrl: {
 		type: String,
 	},
+	isManager: { type: Boolean, default: false },
+	manager: {
+		userId: {
+			type: Schema.Types.ObjectId,
+			ref: 'Manager',
+		},
+		name: { type: String },
+	},
 	workStatus: { type: Boolean, default: false },
 	missEndWorking: { type: Boolean, default: false },
 });

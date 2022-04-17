@@ -18,6 +18,7 @@
 		"moment": "^2.29.1",
 		"mongodb": "^4.4.0",
 		"mongoose": "^6.2.3",
+		"pdfkit": "^0.13.0",
 		"rm": "^0.1.8"
 	},
 	"devDependencies": {
@@ -27,8 +28,8 @@
 	},
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"start": "node src/app.js",
-		"start-server": "node start src/app.js"
+		"start": "nodemon src/app.js",
+		"start-server": "node src/app.js"
 	},
 	"repository": {
 		"type": "git",

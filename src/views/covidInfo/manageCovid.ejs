@@ -1,0 +1,110 @@
+<%- include('../includes/head.ejs') %>
+<body>
+	<%- include('../includes/navigation.ejs') %>
+    <% if(user.isManager && staff) { %>
+        <div class="container">
+            <h3> Hi, <%= user.name%>, total number of employees you manage: <%= staff.length %></h3>
+            
+            <h4>And Covid-19 information of all employees you are managing:       <a href="/manager/covid-list-pdf">Export PDF</a></h4>
+            <div class="container">
+                <div class="row">
+                    <% staff.forEach((item)=> { console.log("#" +item.userId)%>
+                        <a class="btn btn-primary button-design" data-bs-toggle="collapse" href="<%= '#a'+ item.userId%>" role="button" aria-expanded="false" >
+                            <%= item.name %> - <%= item.userId %> 
+                        </a>
+
+                          <div class="collapse" id="<%= 'a'+ item.userId%>">
+                            <div class="container center">
+                                <div class="row">
+                                    <div class="col">
+                                        <% if (item.bodyTemperature.length >0) {%>
+                                            <div class="card success" style="height: 340px">
+                                                <h5><b>BODY TEMPERATURE</b></h5>
+                                                <div class="card-body scroll" style="text-align:center; height: 280px">
+                                                    <% item.bodyTemperature.forEach(item => {  %>
+                                                    <div class=" inline-block " >
+                                                        <div class="card <%= Number(item.temperature) > 37.5 ? 'red': '' %>">
+                                                            <div class="card-body">
+                                                                <p>Temperature: <b><%= item.temperature %> °C</b></p>
+                                                                <p>Date: <b><%= item.date !== null ? item.date.toLocaleDateString('en-GB') : null %></b></p>
+                                                                <p>Time: <b><%= item.time %></b></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <% }) %>
+                                                </div>
+                                            </div>
+                                            <% } else { %> 
+                                                <div class="card success" style="height: 340px">
+                                                    <h5><b>BODY TEMPERATURE</b></h5>
+                                                    <div class="card-body" style="text-align:center;height: 280px">
+                                                        <div>NO INFORMATION</div>
+                                                    </div>
+                                                </div>
+                                            <% } %>
+                                    </div>
+                                    <div class="col" >
+                                        <% if (item.vaccineInfo.firstDoseDate) { %>
+                                            <div class="card <%= item.vaccineInfo.secondDoseName ? 'success' : 'orange' %>" style="height: 340px">
+                                                <h5><b>DOSE 1</b></h5>
+                                                <div class="card-body">
+                                                    <p>Vaccine name: <b><%= item.vaccineInfo.firstDoseName %></b></p>
+                                                    <p>Date: <b><%= item.vaccineInfo.firstDoseDate.toLocaleDateString('en-GB') %></b></p>
+                                                    <p>Vaccination facility: <b><%=item.vaccineInfo.firstDosePlace %></b></p>
+                                                </div>
+                                                <% if(item.vaccineInfo.secondDoseName) { %>
+                                                    <h5><b>DOSE 2</b></h5>
+                                                    <div class="card-body">
+                                                        <p>Vaccine name: <b><%=item.vaccineInfo.secondDoseName %></b></p>
+                                                        <p>Date: <b><%= item.vaccineInfo.secondDoseDate.toLocaleDateString('en-GB') %></b></p>
+                                                        <p>Vaccination facility: <b><%=item.vaccineInfo.secondDosePlace %></b></p>
+                                                    </div>
+                                                    <% } else { %> 
+                                                        <h5><b>DOSE 2</b></h5>
+                                                        <p>NO INFORMATION</p>
+                                                    <% } %>
+                                            </div>
+                                            <% } else { %> 
+                                                <div class="card primary" style="height: 340px">
+                                                    <h5><b>DOSE</b></h5>
+                                                    <div class="card-body" style="text-align:center;height: 280px">
+                                                        <div>NO INFORMATION</div>
+                                                    </div>
+                                                </div>
+                                            <% } %>
+                                    </div>
+                                    <div class="col">
+                                        <% if (item.negativeCovid === true) { %>
+                                            <div class="card success" style="height: 340px">
+                                                <h5><b>NEGATIVE (-)</b></h5>
+                                                <div class="card-body" style="text-align:center;height: 280px">
+                                                    <div>SAFE</div>
+                                                    <% if (item.covidInfection.negativeDate) { %>
+                                                        <b>Tested negative for Covid-19 from <%= item.covidInfection.negativeDate.toLocaleDateString('en-GB') %> </b>
+                                                        <% } %>
+                                                </div>
+                                            </div>
+                                        <% } else if (item.covidInfection.date) { %>
+                                            <div class="card danger" style="height: 340px">
+                                                <h5><b>POSITIVE (+)</b></h5>
+                                                <div class="card-body" style="height: 280px">
+                                                    <p>Test method: <b><%= item.covidInfection.testMethod %></b></p>
+                                                    <p>Infection date: <b><%= item.covidInfection.date !== null ? item.covidInfection.date.toLocaleDateString('en-GB') : null %></b></p>
+                                                    <p>Symptoms: <b><%= item.covidInfection.symptoms %></b></p>
+                                                </div>
+                                            </div>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
+                    <% }) %>
+                </div>
+            </div>
+        </div>
+    <% } else { %>
+        <h3>Only managers can just access information, please log in as a manager account</h3>
+        <% } %>
+</body>
+
+<%- include('../includes/end.ejs') %></link>

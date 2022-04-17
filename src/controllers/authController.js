@@ -2,6 +2,7 @@ const User = require('../models/user');
 const Methods = require('../util/methods');
 const bcrypt = require('bcryptjs');
 const { validationResult } = require('express-validator');
+const Manager = require('../models/manager');
 
 class AuthController {
 	getLogin(req, res, next) {
@@ -105,28 +106,31 @@ class AuthController {
 		bcrypt
 			.hash(password, 12)
 			.then(hashPassword => {
-				const newUser = new User({
-					name: 'Not Khoa',
-					email: email,
-					password: hashPassword,
-					doB: '2000-01-01T08:59:00.000+00:00',
-					department: 'IT',
-					annualLeave: null,
-					startDate: new Date(),
-					salaryScale: 1,
-					imageUrl: '/images/anh.jpg',
-				});
-				return newUser.save().then(user => {
-					const seniority =
-						(Methods.convertToMonth(new Date()) -
-							Methods.convertToMonth(user.startDate)) *
-						12;
-					if (seniority >= 12) {
-						user.annualLeave = 12;
-					} else {
-						user.annualLeave = Math.floor(seniority);
-					}
-					user.save().then(result => res.redirect('/auth/login'));
+				Manager.findOne({ department: 'IT' }).then(manager => {
+					const newUser = new User({
+						name: 'nguyen Van C',
+						email: email,
+						password: hashPassword,
+						doB: '2000-01-01T08:59:00.000+00:00',
+						department: 'IT',
+						annualLeave: null,
+						startDate: new Date(),
+						salaryScale: 1,
+						imageUrl: '/images/anh.jpg',
+						manager: { userId: manager._id, name: manager.name },
+					});
+					return newUser.save().then(user => {
+						const seniority =
+							(Methods.convertToMonth(new Date()) -
+								Methods.convertToMonth(user.startDate)) *
+							12;
+						if (seniority >= 12) {
+							user.annualLeave = 12;
+						} else {
+							user.annualLeave = Math.floor(seniority);
+						}
+						user.save().then(result => res.redirect('/auth/login'));
+					});
 				});
 			})
 			.catch(err => console.log(err));

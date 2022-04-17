@@ -3,7 +3,13 @@
         <%- include('../includes/navigation.ejs') %>
 
             <h4 class="center">Have a nice day</h4>
+            
             <% if (user) { %>
+                <% if (user.isManager) { %>
+                <form action="/manager/covid" method="GET" class="center">
+                    <button type="submit" class="btn btn-warning">Information of your staffs</button> 
+                </form>
+                <% } %>
             <h5 class="center">Please register information below! </h5>
             <hr>
             <div class="container">
@@ -29,7 +35,7 @@
                     <div class="col">
                         <% if (bodyTemperature.length >0) {%>
                         <div class="card success">
-                            <h5><b>Body Temperature</b></h5>
+                            <h5><b>BODY TEMPERATURE</b></h5>
                             <div class="card-body scroll" style="text-align:center">
                                  <% bodyTemperature.forEach(item => {  %>
                                 <div class=" inline-block " >
@@ -46,7 +52,7 @@
                         </div>
                         <% } else { %>
                             <div class="card success">
-                                <h5><b>Body Temperature</b></h5>
+                                <h5><b>BODY TEMPERATURE</b></h5>
                                 <div class="card-body" style="text-align:center">
                                     <div>NO INFORMATION</div>
                                 </div>
@@ -57,7 +63,7 @@
                     <div class="col">
                         
                             <% if (vaccineInfo.firstDoseDate) { %>
-                                <div class="card <%= vaccineInfo.secondDoseName ? 'green' : 'orange' %>">
+                                <div class="card <%= vaccineInfo.secondDoseName ? 'success' : 'orange' %>">
                                     <h5><b>DOSE 1</b></h5>
                                     <div class="card-body">
                                         <p>Vaccine name: <b><%= vaccineInfo.firstDoseName %></b></p>
@@ -182,20 +188,7 @@
                     </form>
                 </div>
             </div>
-            <% } else { %>
-                <h1 class="center">
-                    Please
-                    <button
-                        type="button"
-                        class="btn btn-primary"
-                        data-bs-toggle="modal"
-                        data-bs-target="#login"
-                    >
-                        LOGIN
-                    </button>
-                    to display infomation
-                </h1>
-                <% } %>
+            <% }  %>
 
             <div class="modal fade" id="covidInfaction" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">

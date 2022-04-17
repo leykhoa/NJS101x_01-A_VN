@@ -6,13 +6,16 @@ const siteRouter = require('./site');
 const workTimeRouter = require('./workTime');
 const errorControllers = require('../controllers/errorController');
 const authRouter = require('./auth');
+const managerRouter = require('./manager');
+const isAuth = require('../util/is-auth');
 
 function route(app) {
-	app.use('/attendance', attendanceRouter);
-	app.use('/user', userRouter);
-	app.use('/covid', covidRouter);
-	app.use('/work-time', workTimeRouter);
+	app.use('/attendance', isAuth, attendanceRouter);
+	app.use('/user', isAuth, userRouter);
+	app.use('/covid', isAuth, covidRouter);
+	app.use('/work-time', isAuth, workTimeRouter);
 	app.use('/auth', authRouter);
+	app.use('/manager', isAuth, managerRouter);
 	app.use('/', siteRouter);
 	app.use(errorControllers.get404);
 }

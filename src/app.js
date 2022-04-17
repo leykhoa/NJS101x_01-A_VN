@@ -5,6 +5,7 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 
 const User = require('./models/user');
 const Methods = require('./util/methods');
+const Manager = require('./models/manager');
 
 //get parameter client (req.body)
 const bodyParser = require('body-parser');
@@ -63,6 +64,35 @@ const PORT = process.env.PORT || 3000;
 mongoose
 	.connect(MONGODB_URI)
 	.then(result => {
+		Manager.findOne().then(manager => {
+			if (!manager) {
+				User.findOne({ department: 'IT' })
+					.then(staff => {
+						const newManager = new Manager({
+							_id: '625af139b322d3de582be9bd',
+							name: 'Le Y Khoa',
+							email: 'quanlyit@gmail.com',
+							department: 'IT',
+							staffs: { userId: staff._id, name: staff.name },
+						});
+						newManager
+							.save()
+							.then(manager => console.log('create manager', manager));
+					})
+					.catch();
+			} else {
+				User.find({ department: 'IT', isManager: false })
+					.then(staffs => {
+						infoStaff = staffs.map(item => {
+							return { userId: item._id, name: item.name };
+						});
+						manager.staffs = infoStaff;
+						manager.save();
+					})
+					.catch(err => console.log(err));
+			}
+		});
+
 		app.listen(PORT);
 		console.log(`Connected mongodb and http://localhost:${PORT}`);
 	})

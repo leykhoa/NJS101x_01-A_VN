@@ -1,4 +1,8 @@
 const CovidInfo = require('../models/covidInfo');
+const Manager = require('../models/manager');
+const fs = require('fs');
+const path = require('path');
+const PDFDocument = require('pdfkit');
 
 class CovidController {
 	//[GET] /covid
@@ -108,6 +112,158 @@ class CovidController {
 					.catch(err => console.log(err));
 			})
 			.catch(err => console.log(err));
+	}
+
+	//[POST] manager/covid
+	async manageCovid(req, res, next) {
+		const staffsId = await Manager.findOne().then(item => {
+			const staffId = item.staffs.map(staff => {
+				return { userId: staff.userId, name: staff.name };
+			});
+			return staffId;
+		});
+		const info = await staffsId.map(item => {
+			const list = CovidInfo.findOne({ userId: item.userId }).then(user => {
+				return {
+					userId: item.userId,
+					name: item.name,
+					bodyTemperature: user.bodyTemperature,
+					vaccineInfo: user.vaccineInfo,
+					covidInfection: user.covidInfection,
+					negativeCovid: user.negativeCovid,
+				};
+			});
+			return list;
+		});
+		Promise.all(info).then(item => {
+			res.render('covidInfo/manageCovid', {
+				user: req.user,
+				pageTitle: 'Manager',
+				path: '/manager',
+				staff: item,
+			});
+		});
+	}
+
+	async getPdf(req, res, next) {
+		const user = req.user;
+		const covidPdfName = 'list-covid-department-' + user.department + '.pdf';
+		const covidPdfPath = path.join('src', 'data', 'covidInfo', covidPdfName);
+
+		const staffsId = await Manager.findOne().then(item => {
+			const staffId = item.staffs.map(staff => {
+				return { userId: staff.userId, name: staff.name };
+			});
+			return staffId;
+		});
+		const info = await staffsId.map(item => {
+			const list = CovidInfo.findOne({ userId: item.userId }).then(user => {
+				return {
+					userId: item.userId,
+					name: item.name,
+					bodyTemperature: user.bodyTemperature,
+					vaccineInfo: user.vaccineInfo,
+					covidInfection: user.covidInfection,
+					negativeCovid: user.negativeCovid,
+				};
+			});
+			return list;
+		});
+		Promise.all(info).then(staff => {
+			const pdfDoc = new PDFDocument();
+			pdfDoc.initForm();
+
+			pdfDoc.font('Times-Roman');
+			res.setHeader('Content-Type', 'application/pdf');
+			res.setHeader(
+				'Content-Disposition',
+				'inline; filename="' + covidPdfName + '"',
+			);
+			pdfDoc.pipe(fs.createWriteStream(covidPdfPath));
+			pdfDoc.pipe(res);
+
+			pdfDoc
+				.fontSize(20)
+				.text('Covid-19 infomation of department: ' + user.department);
+			pdfDoc.fontSize(14).text('Manager: ' + user.name);
+			pdfDoc.fontSize(14).text('--------------------------------------');
+
+			staff.map((item, index) => {
+				console.log('check negative', item.negativeCovid);
+				pdfDoc
+					.font('Times-Bold')
+					.fontSize(12)
+					.text(
+						index + 1 + '. ' + item.name + ' -- ' + item.userId,
+						65,
+						60 + (index + 1) * 90,
+					);
+
+				generateTableRowTitle(
+					pdfDoc,
+					80 + (index + 1) * 90,
+					'DOSE',
+					'Type of Vaccine',
+					'Date',
+					'Vaccination facility',
+					'Covid-19',
+				);
+				generateTableRow(
+					pdfDoc,
+					100 + (index + 1) * 90,
+					'Dose 1',
+					item.vaccineInfo.firstDoseName
+						? item.vaccineInfo.firstDoseName
+						: 'No information',
+					item.vaccineInfo.firstDoseDate
+						? item.vaccineInfo.firstDoseDate.toLocaleDateString('en-GB')
+						: 'No information',
+					item.vaccineInfo.firstDosePlace
+						? item.vaccineInfo.firstDosePlace
+						: 'No information',
+					item.negativeCovid === false
+						? 'POSITIVE'
+						: item.covidInfection.negativeDate
+						? 'NEGATIVE from ' +
+						  item.covidInfection.negativeDate.toLocaleDateString('en-GB')
+						: 'NEGATIVE',
+				);
+				generateTableRow(
+					pdfDoc,
+					120 + (index + 1) * 90,
+					'Dose 2',
+					item.vaccineInfo.secondDoseName,
+					item.vaccineInfo.secondDoseDate
+						? item.vaccineInfo.secondDoseDate.toLocaleDateString('en-GB')
+						: 'No information',
+					item.vaccineInfo.firstDosePlace
+						? item.vaccineInfo.firstDosePlace
+						: 'No information',
+				);
+			});
+
+			pdfDoc.end();
+		});
+		function generateTableRow(doc, y, c1, c2, c3, c4, c5) {
+			doc
+				.fontSize(12)
+				.font('Times-Roman')
+				.text(c1, 67, y, { width: 50, align: 'center' })
+				.text(c2, 120, y, { width: 90, align: 'center' })
+				.text(c3, 220, y, { width: 90, align: 'center' })
+				.text(c4, 320, y, { width: 120, align: 'center' })
+				.text(c5, 450, y, { width: 90, align: 'center' });
+		}
+		function generateTableRowTitle(doc, y, c1, c2, c3, c4, c5) {
+			doc
+				.font('Times-Bold')
+				.fontSize(12)
+				.text(c1, 67, y, { width: 50, align: 'center' })
+				.text(c2, 120, y, { width: 90, align: 'center' })
+				.text(c3, 220, y, { width: 90, align: 'center' })
+				.text(c4, 320, y, { width: 120, align: 'center' })
+				.text(c5, 450, y, { width: 90, align: 'center' });
+		}
 	}
 }
 
