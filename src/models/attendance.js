@@ -7,6 +7,7 @@ const attendanceSchema = new Schema({
 		required: true,
 		ref: 'User',
 	},
+	name: { type: String },
 	date: { type: Date, default: new Date() },
 	timeKeeping: [
 		{

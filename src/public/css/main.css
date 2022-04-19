@@ -135,3 +135,18 @@ hr {
 	background-color: rgba(118, 207, 232, 0.81);
 	color: red;
 }
+
+.footer {
+	position: absolute;
+	width: 100%;
+	bottom: 20px;
+	left: 0px;
+}
+.parent {
+	position: relative;
+	min-height: 650px;
+}
+
+.pagination .active {
+	background-color: rgb(0, 136, 255);
+}

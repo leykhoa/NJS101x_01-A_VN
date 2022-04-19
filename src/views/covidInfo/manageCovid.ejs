@@ -8,7 +8,7 @@
             <h4>And Covid-19 information of all employees you are managing:       <a href="/manager/covid-list-pdf">Export PDF</a></h4>
             <div class="container">
                 <div class="row">
-                    <% staff.forEach((item)=> { console.log("#" +item.userId)%>
+                    <% staff.forEach((item)=> { %>
                         <a class="btn btn-primary button-design" data-bs-toggle="collapse" href="<%= '#a'+ item.userId%>" role="button" aria-expanded="false" >
                             <%= item.name %> - <%= item.userId %> 
                         </a>

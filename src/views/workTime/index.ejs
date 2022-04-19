@@ -1,77 +1,75 @@
 <%- include('../includes/head.ejs') %>
 <body>
 	<%- include('../includes/navigation.ejs') %>
-	<div class="container">
 		<h4 class="inline-block">
 			Hi, here is infomation about your work time. If any question, please
-			contact HR for help
+			contact your manager: <i style="color:red"><%= manager ? manager.name + ' - ID: ' + manager._id : '' %></i>
 		</h4>
 		<hr />
-		<% if (user) { %>
-		<div class="container">
 			<div class="row">
-				<div class="col-7">
+				<div class="col-7 parent">
 					<div class="container">
-							<h4 class="center">
-								Your attendance, please select dates to display
-							</h4>
-							<hr />
-							<form action="/work-time/find-attendance" method="GET" class="center">
-								<div class="container">
-									<div class="row">
-										<div class="col" id="select-attendance">
-											<button
-												type="button"
-												class="btn btn-primary"
-												onclick="handleSelect2()"
-											>
-												Select dates
-											</button>
-										</div>
-										<div class="col display-none" id="calendar">
-											<input type="text" name="calendar" />
-										</div>
-										<div class="col display-none" id="find-attendance">
-											<button type="submit" class="btn btn-primary">Find</button>
-										</div>
-									</div>
-								</div>
-							</form>
+						<form action="/work-time/find-attendance" method="GET" class="center">
 							<div class="row">
-								<% if (attendances[0]) { attendances.forEach((item) => { if
-							(item.timeKeeping[0].startTime && item.timeKeeping[0].endTime) { %>
-							<div class="col-3" style="min-width: 270px">
-								<div class="card customer-card">
-									<p style="color: red">
-										<b>Date: <%= item.date.toLocaleDateString('en-GB') %></b>
-									</p>
-									<p>
-										Start working: <%=
-										item.timeKeeping[0].startTime.toLocaleTimeString() %>
-									</p>
-									<p>
-										End working: <%= item.timeKeeping[item.timeKeeping.length -
-										1].endTime ? item.timeKeeping[item.timeKeeping.length -
-										1].endTime.toLocaleTimeString() :
-										item.timeKeeping[item.timeKeeping.length - 2].endTime ?
-										item.timeKeeping[item.timeKeeping.length -
-										2].endTime.toLocaleTimeString() : null %>
-									</p>
-									<p>
-										Total working time: <%= item.totalWorkHours ?
-										item.totalWorkHours : '0' %> hrs
-									</p>
-									<p>Over time: <%= item.overTime ? item.overTime : '0' %> hrs</p>
+								<div class="col-7">
+									<h5>Your attendance, please select dates to display</h5>
+									
 								</div>
+								<div class="col-5" id="select-attendance">
+									<button
+										type="button"
+										class="btn btn-primary"
+										onclick="handleSelect2()"
+									>
+										Select dates
+									</button>
+								</div>
+								<div class="col-4 display-none" id="calendar" style="min-width: 200px;">
+									<input type="text" name="calendar" />
+								</div>
+								<div class="col-1 display-none" id="find-attendance">
+									<button type="submit" class="btn btn-primary">Find</button>
+								</div>	
 							</div>
-							<% }})} else {%>
+						</form>
+						<hr />
+
+						<div class="row">
+							<% if (attendances[0]) { attendances.forEach((item) => { if
+						(item.timeKeeping[0].startTime && item.timeKeeping[0].endTime) { %>
+						<div class="col-3" style="min-width: 270px">
+							<div class="card customer-card">
+								<p style="color: red">
+									<b>Date: <%= item.date.toLocaleDateString('en-GB') %></b>
+								</p>
+								<p>
+									Start working: <%=
+									item.timeKeeping[0].startTime.toLocaleTimeString() %>
+								</p>
+								<p>
+									End working: <%= item.timeKeeping[item.timeKeeping.length -
+									1].endTime ? item.timeKeeping[item.timeKeeping.length -
+									1].endTime.toLocaleTimeString() :
+									item.timeKeeping[item.timeKeeping.length - 2].endTime ?
+									item.timeKeeping[item.timeKeeping.length -
+									2].endTime.toLocaleTimeString() : null %>
+								</p>
+								<p>
+									Total working time: <%= item.totalWorkHours ?
+									item.totalWorkHours : '0' %> hrs
+								</p>
+								<p>Over time: <%= item.overTime ? item.overTime : '0' %> hrs</p>
+							</div>
+						</div>
+						<% }})} else {%>
 							<div class="container customer-card center">
 								<div style="color: red">
 									<b>NO INFORMATION</b>
 								</div>
 							</div>
-							<% } %>
-							</div>
+						<% } %>
+						</div>
+						<%- include('../includes/pagination.ejs') %>
 							
 					</div>
 				</div>
@@ -114,6 +112,12 @@
 									<option selected value="<%= new Date().getFullYear() %>">
 										<%= new Date().getFullYear() %>
 									</option>
+									<option value="<%= new Date().getFullYear()-1 %>">
+										<%= new Date().getFullYear()-1 %>
+									</option>
+									<option value="<%= new Date().getFullYear()-2 %>">
+										<%= new Date().getFullYear()-2 %>
+									</option>
 								</select>
 							</div>
 							<div class="col-2">
@@ -148,8 +152,6 @@
 				</div>
 				</div>
 			</div>
-		</div>
-		<% } %>
-	</div>
+	
 </body>
 <%- include('../includes/end.ejs') %>

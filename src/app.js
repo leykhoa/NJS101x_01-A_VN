@@ -36,17 +36,21 @@ app.set('view engine', 'ejs'); // EJS is a simple templating language that lets 
 app.set('views', './src/views'); // src views
 
 //Add a user
-app.use((req, res, next) => {
+app.use(async (req, res, next) => {
 	if (!req.session.user) {
 		req.user = '';
 		return next();
 	} else {
+		const manager = await Manager.findOne({
+			'staffs.userId': req.session.user._id,
+		}).then(user => user);
 		User.findById(req.session.user._id)
 			.then(user => {
 				if (!user) {
 					return next();
 				} else {
 					req.user = user;
+					req.manager = manager;
 					next();
 				}
 			})
@@ -75,9 +79,7 @@ mongoose
 							department: 'IT',
 							staffs: { userId: staff._id, name: staff.name },
 						});
-						newManager
-							.save()
-							.then(manager => console.log('create manager', manager));
+						newManager.save();
 					})
 					.catch();
 			} else {

@@ -2,18 +2,14 @@ const Attendance = require('../models/attendance');
 const Methods = require('../util/methods');
 const OnLeave = require('../models/onLeave');
 const url = require('url');
-const User = require('../models/user');
-const mongoose = require('mongoose');
+const Manager = require('../models/manager');
 
 class AttendanceController {
 	// [GET] /attendance
 	async index(req, res) {
 		const userId = req.user._id;
-		const queryOnLeave = OnLeave.find({ userId: userId }).catch(err =>
-			console.log(err),
-		);
-		queryOnLeave instanceof mongoose.Query;
-		const list = await queryOnLeave;
+		const list = await OnLeave.find({ userId: userId }).then(leave => leave);
+
 		const currentDate = Methods.currentDate();
 		Attendance.findOne({
 			userId: userId,
@@ -36,6 +32,18 @@ class AttendanceController {
 	startWorking(req, res, next) {
 		const userId = req.user._id;
 		const currentDate = Methods.currentDate();
+
+		//Lock user
+		if (req.user.isLock === true) {
+			return res.redirect(
+				url.format({
+					pathname: '/attendance',
+					query: {
+						lock: 'locked',
+					},
+				}),
+			);
+		}
 		Attendance.findOne({
 			userId: userId,
 			date: currentDate,
@@ -45,6 +53,7 @@ class AttendanceController {
 					// Create new CHECK OUT for new day
 					const attendance = new Attendance({
 						userId: userId,
+						name: req.user.name,
 						date: currentDate,
 						timeKeeping: [
 							{
@@ -85,6 +94,18 @@ class AttendanceController {
 	endWorking(req, res, next) {
 		const userId = req.user._id;
 		const currentDate = Methods.currentDate();
+
+		//Lock user
+		if (req.user.isLock === true) {
+			return res.redirect(
+				url.format({
+					pathname: '/attendance',
+					query: {
+						lock: 'locked',
+					},
+				}),
+			);
+		}
 		Attendance.findOne({
 			userId: userId,
 			date: currentDate,
@@ -158,6 +179,17 @@ class AttendanceController {
 
 	//[POST] /attendance/on-leave
 	async onLeave(req, res, next) {
+		//Lock user
+		if (req.user.isLock === true) {
+			return res.redirect(
+				url.format({
+					pathname: '/attendance',
+					query: {
+						lock: 'locked',
+					},
+				}),
+			);
+		}
 		const userId = req.user._id;
 		const data = {
 			calendar: req.body.calendar,
@@ -166,7 +198,6 @@ class AttendanceController {
 		};
 		//convert dates to check start and end date when register several dates
 		const list = Methods.convertOnLeave(data);
-		console.log('check day', list);
 
 		// Check have date (not fall on Saturday or Sunday) and total dates < annual leave
 		if (list.day > 0 && list.day <= req.user.annualLeave) {
@@ -235,9 +266,7 @@ class AttendanceController {
 				});
 				Promise.all(promise)
 					.then(item => {
-						console.log('check item', item);
 						const find = item.find(x => x === 'no-select');
-						console.log('find find', find);
 						if (!find) {
 							req.user
 								.save()
@@ -283,6 +312,76 @@ class AttendanceController {
 				}),
 			);
 		}
+	}
+
+	async manageAttendance(req, res, next) {
+		const userId = req.user._id;
+		let year = req.query.year;
+		let month = req.query.month;
+		let find;
+		if (month === 'all') {
+			find = { $gte: year + '-01-01', $lte: year + '-12-31' };
+		} else if (!month || !year) {
+			find = null;
+		} else {
+			const convert = Methods.convertMonthForSalary(year + '-' + month);
+			find = { $gte: convert.start, $lte: convert.end };
+		}
+
+		const staffsId = await Manager.findOne({ _id: userId }).then(item => {
+			const staffId = item.staffs.map(staff => {
+				return { userId: staff.userId, name: staff.name };
+			});
+			return staffId;
+		});
+		const info = await staffsId.map(async item => {
+			const list = new Promise(async resolve => {
+				if (find) {
+					const staff = await Attendance.find({
+						userId: item.userId,
+						date: find,
+					}).then(item => item);
+					return resolve(staff);
+				}
+				const staff = Attendance.find({
+					userId: item.userId,
+				});
+				return resolve(staff);
+			});
+			return list;
+		});
+		await Promise.all(info).then(item => {
+			let staffs = item.filter(staff => {
+				return staff.length !== 0;
+			});
+			console.log('check staff', staffs);
+			res.render('attendance/manageAttendance', {
+				path: '/manager',
+				pageTitle: 'Manage Attendance',
+				user: req.user,
+				staffs: staffs,
+				totalStaff: item.length,
+			});
+		});
+	}
+
+	deleteAttendance(req, res, next) {
+		const id_attendance = req.body.id_attendance;
+		Attendance.deleteOne({ _id: id_attendance })
+			.then(result => res.redirect('/manager/attendance'))
+			.catch(err => console.log(err));
+	}
+
+	lockUser(req, res, next) {
+		const staff = req.user.staffId;
+		User.findOne({ _id: staff }).then(user => {
+			if (user.isLock === false) {
+				user.isLock = true;
+				return user.save().then(item => res.redirect('/manager/attendance'));
+			}
+			user.isLock === false;
+			return user.save().then(item => res.redirect('/manager/attendance'));
+		});
 	}
 }
 module.exports = new AttendanceController();

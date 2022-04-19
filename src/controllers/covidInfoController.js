@@ -116,23 +116,26 @@ class CovidController {
 
 	//[POST] manager/covid
 	async manageCovid(req, res, next) {
-		const staffsId = await Manager.findOne().then(item => {
+		const userId = req.user._id;
+		const staffsId = await Manager.findOne({ _id: userId }).then(item => {
 			const staffId = item.staffs.map(staff => {
 				return { userId: staff.userId, name: staff.name };
 			});
 			return staffId;
 		});
-		const info = await staffsId.map(item => {
-			const list = CovidInfo.findOne({ userId: item.userId }).then(user => {
-				return {
-					userId: item.userId,
-					name: item.name,
-					bodyTemperature: user.bodyTemperature,
-					vaccineInfo: user.vaccineInfo,
-					covidInfection: user.covidInfection,
-					negativeCovid: user.negativeCovid,
-				};
-			});
+		const info = await staffsId.map(async item => {
+			const list = await CovidInfo.findOne({ userId: item.userId }).then(
+				user => {
+					return {
+						userId: item.userId,
+						name: item.name,
+						bodyTemperature: user.bodyTemperature,
+						vaccineInfo: user.vaccineInfo,
+						covidInfection: user.covidInfection,
+						negativeCovid: user.negativeCovid,
+					};
+				},
+			);
 			return list;
 		});
 		Promise.all(info).then(item => {
@@ -150,23 +153,25 @@ class CovidController {
 		const covidPdfName = 'list-covid-department-' + user.department + '.pdf';
 		const covidPdfPath = path.join('src', 'data', 'covidInfo', covidPdfName);
 
-		const staffsId = await Manager.findOne().then(item => {
+		const staffsId = await Manager.findOne({ _id: user._id }).then(item => {
 			const staffId = item.staffs.map(staff => {
 				return { userId: staff.userId, name: staff.name };
 			});
 			return staffId;
 		});
-		const info = await staffsId.map(item => {
-			const list = CovidInfo.findOne({ userId: item.userId }).then(user => {
-				return {
-					userId: item.userId,
-					name: item.name,
-					bodyTemperature: user.bodyTemperature,
-					vaccineInfo: user.vaccineInfo,
-					covidInfection: user.covidInfection,
-					negativeCovid: user.negativeCovid,
-				};
-			});
+		const info = await staffsId.map(async item => {
+			const list = await CovidInfo.findOne({ userId: item.userId }).then(
+				user => {
+					return {
+						userId: item.userId,
+						name: item.name,
+						bodyTemperature: user.bodyTemperature,
+						vaccineInfo: user.vaccineInfo,
+						covidInfection: user.covidInfection,
+						negativeCovid: user.negativeCovid,
+					};
+				},
+			);
 			return list;
 		});
 		Promise.all(info).then(staff => {
@@ -189,7 +194,6 @@ class CovidController {
 			pdfDoc.fontSize(14).text('--------------------------------------');
 
 			staff.map((item, index) => {
-				console.log('check negative', item.negativeCovid);
 				pdfDoc
 					.font('Times-Bold')
 					.fontSize(12)

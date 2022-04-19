@@ -14,7 +14,6 @@ class Methods {
 			new Date().toISOString().slice(0, 10),
 			'YYYY-MM-DD',
 		).format('YYYY-MM-DD');
-		console.log('check date', current);
 		return current;
 	}
 
@@ -27,7 +26,6 @@ class Methods {
 
 	convertOnLeave(data) {
 		const day = data.calendar;
-		console.log('check day', day);
 		const start = moment(day.slice(0, 10), 'YYYY-MM-DD');
 		const end = moment(day.slice(13, 23), 'YYYY-MM-DD');
 		const days = moment.duration(end.diff(start)).asDays();

@@ -34,6 +34,7 @@ class AuthController {
 
 	//[POST] /auth/login
 	login(req, res, next) {
+		console.log('check url', req.session.baseUrl);
 		const email = req.body.email;
 		const password = req.body.password;
 		const errors = validationResult(req);
@@ -66,9 +67,8 @@ class AuthController {
 				if (doMatch) {
 					req.session.isLoggedIn = true;
 					req.session.user = user;
-					console.log('express session', req.session.isLoggedIn);
 					return req.session.save(err => {
-						res.redirect('/');
+						res.redirect(`${req.session.backUrl}`);
 					});
 				}
 				return res.status(422).render('auth/login', {

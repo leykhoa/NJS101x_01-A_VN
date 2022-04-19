@@ -39,6 +39,7 @@ const userSchema = new Schema({
 		},
 		name: { type: String },
 	},
+	isLock: { type: Boolean, default: false },
 	workStatus: { type: Boolean, default: false },
 	missEndWorking: { type: Boolean, default: false },
 });
