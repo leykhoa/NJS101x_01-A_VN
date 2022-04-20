@@ -1,0 +1,62 @@
+<div class="row mb-3">
+	<label for="name" class="col-sm-2 col-form-label">Full name</label>
+	<div class="col-sm-10">
+		<input
+			type="text"
+			class="form-control input-width"
+			id="name"
+			disabled
+			value="<%= user.name %>"
+		/>
+	</div>
+</div>
+<div class="row mb-3">
+	<div class="col-form-label col-sm-2 pt-0">Work Place</div>
+	<div class="col-sm-10">
+		<div class="form-check">
+			<input
+				class="form-check-input"
+				type="radio"
+				name="workPlace"
+				value="At Company"
+				checked
+			/>At company
+		</div>
+		<div class="form-check">
+			<input
+				class="form-check-input"
+				type="radio"
+				name="workPlace"
+				value="At Home"
+			/>
+			At home
+		</div>
+	</div>
+</div>
+<% if (user) { %>
+<h4
+	class="form-check form-switch display-none <%= user.workStatus === true ? 'display-show' : 'display-none' %>"
+	id="working"
+>
+	<input
+		class="form-check-input switch-on"
+		type="checkbox"
+		role="switch"
+		disabled
+		checked
+	/>
+	<label class="form-check-label" for="working"> Working</label>
+</h4>
+<h4
+	class="form-check form-switch <%= user.workStatus === false ? 'display-show' : 'display-none' %>"
+	id="disable-working"
+>
+	<input
+		class="form-check-input switch-off"
+		type="checkbox"
+		role="switch"
+		disabled
+	/>
+	<label class="form-check-label" for="working"> Disabled working</label>
+</h4>
+<% } %>

@@ -1,0 +1,61 @@
+<%- include('./includes/head.ejs') %>
+    <link rel="stylesheet" href="css/main.css">
+    </head>
+    <body>
+        <%- include('./includes/navigation.ejs') %>
+        <div class="container center" style="padding: 5rem">
+            <h1>Welcome to MY COMPANY, choose the task you want to do! (Don't forget to take attendance!)</h1>
+
+        <hr>
+        <h3 class="center">Today is <%= new Date().toLocaleDateString('en-GB') %></h3>
+        <hr>
+        <div class="container">
+          <% if (user) { %>
+            <div class="row row-cols-2 ">
+              <form action="/attendance/start-working" class="col-6 center " method="post">
+                <button
+                type="submit"
+                class="button-design switch-on <%= user.workStatus === true ? 'display-none' : '' %>"
+              >
+                CHECK IN (At Company)
+              </button>
+              <button
+                type="submit"
+                class="button-design danger <%= user.workStatus === false ? 'display-none' : '' %>"
+                formaction="/attendance/end-working"
+              >
+                CHECK OUT
+              </button>
+              </form>
+              <form action="/covid" class="col-6 center ">
+                <button
+                type="submit"
+                class="button-design primary "
+              >
+                COVID-19 INFORMATION
+              </button>
+              </form>
+              <form action="/user" class="col-6 center  ">
+                <button
+                type="submit"
+                class="button-design primary"
+              >
+                YOUR PROFILE
+              </button>
+              </form>
+              <form action="/work-time" class="col-6 center ">
+                <button
+                type="submit"
+                class="button-design primary"
+              >
+                YOUR WORK TIME AND SALARY
+              </button>
+              </form>
+            </div>
+          </div>
+          <%}%>
+          </div>
+            
+
+    </body>
+    <%- include('./includes/end.ejs') %>

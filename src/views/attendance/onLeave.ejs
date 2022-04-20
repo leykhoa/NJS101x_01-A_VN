@@ -1,0 +1,99 @@
+<div
+	class="modal fade"
+	id="onLeave"
+	tabindex="-1"
+	aria-labelledby="exampleModalLabel"
+	aria-hidden="true"
+>
+	<div class="modal-dialog">
+		<form action="/attendance/on-leave" method="POST">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Register on leave</h5>
+					<button
+						type="button"
+						class="btn-close"
+						data-bs-dismiss="modal"
+						aria-label="Close"
+					></button>
+				</div>
+				<div class="modal-body">
+					<h4>
+						Your annual leave:
+						<b style="color: red"><%= user.annualLeave %></b>
+						days
+					</h4>
+					<p>
+						<b style="color: red"
+							>NOTE: Any registration dates that overlap, exceed 8 hours/day or
+							last month will be rejected
+						</b>
+					</p>
+					<div class="mb-3">
+						<select
+							class="form-select"
+							aria-label="Default select example"
+							id="type-leave"
+							name="type-leave"
+							onclick="handleSelect()"
+						>
+							<option selected>Please type of on leave</option>
+							<option value="hour">By the hour</option>
+							<option value="day">By the day</option>
+						</select>
+					</div>
+					<div class="mb-3 display-none" id="leave-day">
+						<label for="calendar" class="col-form-label">Choose day</label>
+						<input type="text" name="calendar" id="calendar" />
+					</div>
+					<div class="mb-3 display-none" id="leave-hour">
+						<label for="type-leave" class="col-form-label"
+							>Choose hours to take leave</label
+						>
+						<input
+							id="leaveByHour"
+							name="leaveByHour"
+							class="form-range"
+							type="range"
+							min="0"
+							max="8"
+							value="8"
+							oninput="this.nextElementSibling.value = this.value"
+						/>
+						<output id="leaveByHour" name="leaveByHour"></output>
+						<i> hour</i>
+					</div>
+					<div class="mb-3">
+						<label for="reason" class="col-form-label">Your reason:</label>
+						<textarea
+							class="form-control"
+							id="reason"
+							name="reason"
+							required
+						></textarea>
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<button
+						type="button"
+						class="btn btn-secondary <%= user.annualLeave === 0 ? 'display-none' : '' %>"
+						data-bs-dismiss="modal"
+					>
+						Close
+					</button>
+					<button
+						type="submit"
+						class="btn btn-primary <%= user.annualLeave === 0 ? 'display-none' : '' %>"
+					>
+						Submit
+					</button>
+					<b class="<%= user.annualLeave !== 0 ? 'display-none' : '' %>"
+						>You have no more days to take annual leave, please contact HR for
+						help</b
+					>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

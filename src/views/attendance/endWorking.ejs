@@ -1,0 +1,40 @@
+<% if (attendance) { %>
+<div class="container" style="margin-top: 20px">
+	<div class="card-header">
+		<h4>Time-keeping list for <%= new Date().toLocaleDateString('en-GB') %></h4>
+		<p>
+			<b>
+				Total working hour: <%= attendance.totalWorkHours %> hours and total
+				over time : <%= attendance.overTime ?attendance.overTime : '0'%>
+			</b>
+		</p>
+	</div>
+
+	<div class="container">
+		<div class="row">
+			<% attendance.timeKeeping.forEach( (item,index) => { %>
+			<div class="col-md-6">
+				<div
+					class="card customer-card <%= item.endTime ? 'border-green' : 'border-red' %>"
+				>
+					<p style="color: red"><b>Times: <%= index +1 %></b></p>
+					<div class="card-text">
+						Check in at:
+						<b
+							><%= item.startTime ? item.startTime.toLocaleTimeString() : null
+							%></b
+						>
+					</div>
+					<div class="card-text">
+						Check out at:
+						<b><%= item.endTime ? item.endTime.toLocaleTimeString() : '' %></b>
+					</div>
+					<div>Work place: <b><%= item.workPlace %></b></div>
+					<span>Working hour: <b><%= item.hours %></b> hrs </span>
+				</div>
+			</div>
+			<% }) %>
+		</div>
+	</div>
+</div>
+<% } %>

@@ -1,0 +1,77 @@
+<div
+	class="modal fade"
+	id="login"
+	tabindex="-1"
+	aria-labelledby="exampleModalLabel"
+	aria-hidden="true"
+>
+<form action="/auth/login" method="POST">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header center">
+				<h5 class="modal-title" id="exampleModalLabel">LOGIN</h5>
+			</div>
+				<div class="modal-body">
+					<div class="mb-3">
+						<label for="recipient-name" class="col-form-label">Email:</label>
+						<input type="text" class="form-control" name="email" />
+					</div>
+					<div class="mb-3">
+						<label for="message-text" class="col-form-label">Password:</label>
+						<input class="form-control" name="password"></input>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+						CLOSE
+					</button>
+					<button type="submit" class="btn btn-primary">LOGIN</button>
+				</div>
+			
+		</div>
+	
+	</div>
+</form>
+</div>
+
+
+<div
+	class="modal fade"
+	id="signup"
+	tabindex="-1"
+	aria-labelledby="exampleModalLabel"
+	aria-hidden="true"
+>
+<form action="/auth/signup" method="POST">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header center">
+				<h5 class="modal-title" id="exampleModalLabel">SIGN UP</h5>
+			</div>
+				<div class="modal-body">
+					<div class="mb-3">
+						<label for="recipient-name" class="col-form-label">Email:</label>
+						<input type="text" class="form-control" name="email" />
+					</div>
+					<div class="mb-3">
+						<label for="message-text" class="col-form-label">Password:</label>
+						<input class="form-control" name="password"></input>
+					</div>
+					<div class="mb-3">
+						<label for="message-text" class="col-form-label">Confirm password:</label>
+						<input class="form-control" name="confirmPassword"></input>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+						CLOSE
+					</button>
+					<button type="submit" class="btn btn-primary">Sign Up</button>
+				</div>
+			
+		</div>
+	
+	</div>
+</form>
+</div>
+

@@ -1,0 +1,127 @@
+<%- include('../includes/head.ejs') %>
+
+<body>
+	<%- include('../includes/navigation.ejs') %> <% if (user) { %>
+	<div class="container" style="max-width: 800px; padding: 50px">
+		<h3 class="center">Welcome to the information management</h3>
+		<hr />
+		<div class="row g-0">
+			<div class="col-md-5">
+				<img
+					src="<%= user.imageUrl %>"
+					class="img-fluid rounded-start"
+					alt="..."
+				/>
+			</div>
+			<div class="col-md-7 card-body">
+				<div class="row mb-3">
+					<label for="name" class="col-sm-2 col-form-label">ID</label>
+					<div class="col-sm-10">
+						<input
+							type="text"
+							class="form-control"
+							id="name"
+							disabled
+							width="90%"
+							value="<%= user._id %>"
+						/>
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label for="name" class="col-sm-5 col-form-label">Name</label>
+					<div class="col-sm-7">
+						<input
+							type="text"
+							class="form-control"
+							id="name"
+							disabled
+							width="90%"
+							value="<%= user.name %>"
+						/>
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label for="name" class="col-sm-5 col-form-label">Day of Birth</label>
+					<div class="col-sm-7">
+						<input
+							type="text"
+							class="form-control"
+							id="name"
+							disabled
+							width="90%"
+							value="<%= user.doB !== null ? user.doB.toLocaleDateString('en-GB') : null %>"
+						/>
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label for="name" class="col-sm-5 col-form-label">Start Date</label>
+					<div class="col-sm-7">
+						<input
+							type="text"
+							class="form-control"
+							id="name"
+							disabled
+							width="90%"
+							value="<%= user.startDate !== null ? user.startDate.toLocaleDateString('en-GB') : null %>"
+						/>
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label for="name" class="col-sm-5 col-form-label">Department</label>
+					<div class="col-sm-7">
+						<input
+							type="text"
+							class="form-control"
+							id="name"
+							disabled
+							width="90%"
+							value="<%= user.department %>"
+						/>
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label for="name" class="col-sm-5 col-form-label">Salary Scale</label>
+					<div class="col-sm-7">
+						<input
+							type="text"
+							class="form-control"
+							id="name"
+							disabled
+							width="90%"
+							value="<%= user.salaryScale %>"
+						/>
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label for="name" class="col-sm-5 col-form-label">Annual leave</label>
+					<div class="col-sm-7">
+						<input
+							type="text"
+							class="form-control"
+							id="name"
+							disabled
+							width="90%"
+							value="<%= user.annualLeave %>"
+						/>
+					</div>
+				</div>
+				<div class="row mb-3">
+					<form
+						action="/user/edit-image"
+						method="post"
+						enctype="multipart/form-data"
+					>
+						<label for="image">Image </label>
+						<input type="file" name="image" id="image" />
+						<button type="submit" class="btn-primary">Save</button>
+					</form>
+				</div>
+				<% if (errorMessage) { %>
+				<div class="error"><%= errorMessage %></div>
+				<% } %>
+			</div>
+		</div>
+	</div>
+	<% } %>
+</body>
+<%- include('../includes/end.ejs') %>

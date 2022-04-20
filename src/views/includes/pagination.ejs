@@ -1,0 +1,60 @@
+<nav aria-label="Page navigation example ">
+	<ul class="pagination justify-content-center footer">
+		<% if (currentPage != 1 && previousPage !=1) { %>
+		<li class="page-item">
+			<a
+				class="page-link"
+				href="/work-time/<%=url %>&page=1&item_per_page=<%= item_per_page %>"
+				>1</a
+			>
+		</li>
+		<% } %> <% if (hasPreviousPage) { %>
+		<li class="page-item">
+			<a
+				class="page-link"
+				href="/work-time/<%=url %>&page=<%= previousPage %>&item_per_page=<%= item_per_page %>"
+				><%= previousPage %></a
+			>
+		</li>
+		<% } %>
+		<li class="page-item">
+			<a
+				class="page-link active"
+				href="/work-time/<%=url %>&page=<%= currentPage %>&item_per_page=<%= item_per_page %>"
+				><%= currentPage %></a
+			>
+		</li>
+		<% if (hasNextPage) { %>
+		<li class="page-item">
+			<a
+				class="page-link"
+				href="/work-time/<%=url %>&page=<%= nextPage %>&item_per_page=<%= item_per_page %>"
+				><%= nextPage %></a
+			>
+		</li>
+		<% } %> <% if (lastPage !== currentPage && nextPage !== lastPage) { %>
+
+		<li class="page-item">
+			<a
+				class="page-link"
+				href="/work-time/<%=url %>&page=<%= lastPage %>&item_per_page=<%= item_per_page %>"
+				><%= lastPage %> - Last Page</a
+			>
+		</li>
+		<% } %>
+		<li class="page-item">
+			<select class="form-select" onchange="location = this.value;">
+				<option>Day/page</option>
+				<option value="/work-time/<%=url %>&page=1&item_per_page=1">
+					1 day
+				</option>
+				<option value="/work-time/<%=url %>&page=1&item_per_page=2">
+					2 day
+				</option>
+				<option value="/work-time/<%=url %>&page=1&item_per_page=3">
+					3 day
+				</option>
+			</select>
+		</li>
+	</ul>
+</nav>
