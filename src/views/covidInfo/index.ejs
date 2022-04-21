@@ -1,55 +1,50 @@
 <%- include('../includes/head.ejs') %>
     <body>
         <%- include('../includes/navigation.ejs') %>
-
-            <h4 class="center">Have a nice day</h4>
-            
-            <% if (user) { %>
-                <% if (user.isManager) { %>
-                <form action="/manager/covid" method="GET" class="center">
-                    <button type="submit" class="btn btn-warning">Information of your staffs</button> 
-                </form>
-                <% } %>
+        <div class="container center">
+        <% if (user) { %>
+            <% if (user.isManager) { %>
+            <form action="/manager/covid" method="GET" class="center">
+                <button type="submit" class="btn btn-warning">Information of your staffs</button> 
+            </form>
+            <% } %>
             <h5 class="center">Please register information below! </h5>
             <hr>
-            <div class="container">
-                <div class="row">
-            <div class="col">
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#bodyTemperature"  style="min-height: 62px;">Register for Body temperature </button>
-            </div>
-            <div class="col">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#vaccineInfo" style="min-height: 62px;" >Register for Vaccination </button>
-            </div>
-            <div class="col">
-                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#covidInfaction"value="covidInfaction" style="min-height: 62px;">Register for Covid-19 infection</button>
-            </div>
-            </div>
+            <div class="row">
+                <div class="col-12 col-lg" style="min-width:150px">
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#bodyTemperature"  style="min-height: 62px;margin: 5px">Register for Body temperature </button>
+                </div>
+                <div class="col-12 col-lg">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#vaccineInfo" style="min-height: 62px; min-width:240px; margin: 5px" >Register for Vaccination </button>
+                </div>
+                <div class="col-12 col-lg">
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#covidInfaction"value="covidInfaction" style="min-height: 62px;margin: 5px">Register for Covid-19 infection</button>
+                </div>
             </div>
             <hr>
             <div class="center">
                 <button type="button" class="btn btn-success" onclick="handleShow()" id="button-show">Show extra</button>
             </div>
             
-            <div class="container display-none" id="infomation-covid">
+            <div class="container center display-none" id="infomation-covid">
                 <div class="row">
-                    <div class="col">
+                    <div class="col-12 col-lg-4">
                         <% if (bodyTemperature.length >0) {%>
-                        <div class="card success">
-                            <h5><b>BODY TEMPERATURE</b></h5>
-                            <div class="card-body scroll" style="text-align:center">
-                                 <% bodyTemperature.forEach(item => {  %>
-                                <div class=" inline-block " >
-                                    <div class="card <%= Number(item.temperature) > 37.5 ? 'red': '' %>">
-                                        <div class="card-body">
-                                            <p>Temperature: <b><%= item.temperature %> °C</b></p>
-                                            <p>Date: <b><%= item.date !== null ? item.date.toLocaleDateString('en-GB') : null %></b></p>
-                                            <p>Time: <b><%= item.time %></b></p>
+                            <div class="card success">
+                                <h5><b>BODY TEMPERATURE</b></h5>
+                                <div class="card-body scroll" style="text-align:center">
+                                    <% bodyTemperature.forEach(item => {  %>
+                                        <div class=" inline-block " >
+                                            <div class="card <%= Number(item.temperature) > 37.5 ? 'red': '' %>">
+                                                <div class="card-body">
+                                                    <p>Temperature: <b><%= item.temperature %> °C</b></p>
+                                                    <p>Date: <b><%= item.date !== null ? item.date.toLocaleDateString('en-GB') : null %></b></p>
+                                                    <p>Time: <b><%= item.time %></b></p>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
+                                    <% }) %>
                                 </div>
-                                <% }) %>
-                            </div>
-                        </div>
                         <% } else { %>
                             <div class="card success">
                                 <h5><b>BODY TEMPERATURE</b></h5>
@@ -59,10 +54,10 @@
                             </div>
                         <% } %>
                     </div>
+                    
 
-                    <div class="col">
-                        
-                            <% if (vaccineInfo.firstDoseDate) { %>
+                    <div class="col-12 col-lg-4">
+                        <% if (vaccineInfo.firstDoseDate) { %>
                                 <div class="card <%= vaccineInfo.secondDoseName ? 'success' : 'orange' %>">
                                     <h5><b>DOSE 1</b></h5>
                                     <div class="card-body">
@@ -83,18 +78,17 @@
                                         <p>NO INFORMATION</p>
                                     <% } %>
                                 </div>
-                            <% } else { %> 
-                                <div class="card primary">
-                                    <h5><b>DOSE</b></h5>
-                                    <div class="card-body" style="text-align:center">
-                                        <div>NO INFORMATION</div>
-                                    </div>
+                        <% } else { %> 
+                            <div class="card primary">
+                                <h5><b>DOSE</b></h5>
+                                <div class="card-body" style="text-align:center">
+                                    <div>NO INFORMATION</div>
                                 </div>
-                            <% } %>
-                        
+                            </div>
+                        <% } %>                  
                     </div>
 
-                    <div class="col">
+                    <div class="col col-lg-4">
                         <% if (negativeCovid === true) { %>
                             <div class="card success">
                                 <h5><b>NEGATIVE (-)</b></h5>
@@ -106,7 +100,7 @@
                                 </div>
                             </div>
                         <% } else if (covidInfection.date) { %>
-                            <div class="card danger">
+                            <div class="card danger col col-lg-4">
                                 <h5><b>POSITIVE (+)</b></h5>
                                 <div class="card-body">
                                     <p>Test method: <b><%= covidInfection.testMethod %></b></p>
@@ -115,9 +109,7 @@
                                     <form action="/covid/negative" method="GET" style="text-align:center">
                                         <button type="submit" class="btn btn-success"><i class="fa-solid fa-circle-minus"></i> Negative </button>
                                     </form>
-                                    
                                 </div>
-                                
                             </div>
                         <% } %>
                     </div>
@@ -133,7 +125,7 @@
                                 <h5 class="modal-title" id="exampleModalLabel">Register for body temperature information</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="modal-body">
+                            <div class="modal-body text-justify">
                             <div class="mb-3">
                                 <label for="body-temperature" class="col-form-label">Body temperature</label>
                                 <input type="number" class="form-control" id="body-temperature" placeholder="°C" name="temperature" required>
@@ -164,13 +156,12 @@
                                 <h5 class="modal-title" id="exampleModalLabel">Register vaccination information</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="modal-body">
+                            <div class="modal-body text-justify">
                                 <div class="mb-3">
                                     <h3>Dose 1</h3>
                                     <input type="text" class="form-control" placeholder="Name of vaccine" name="firstDoseName" required>
                                     <input type="date" class="form-control" name="firstDoseDate" required>
                                     <input type="text" class="form-control" placeholder="Vacination facility" name="firstDosePlace">
-                                    
                                 </div>
                                 <hr>
                                 <div class="mb-3">
@@ -188,8 +179,7 @@
                     </form>
                 </div>
             </div>
-            <% }  %>
-
+        
             <div class="modal fade" id="covidInfaction" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <form action="/covid/covid19-infection" method="POST">
@@ -198,7 +188,7 @@
                                 <h5 class="modal-title" id="exampleModalLabel">Register for Covid-19 infection</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="modal-body">
+                            <div class="modal-body text-justify">
                                 <div class="mb-3">
                                     <label for="test-method" class="col-form-label">Test method</label>
                                     <select id="test-method" name="testMethod">
@@ -217,7 +207,6 @@
                                     <label for="symptoms" class="col-form-label">Symptoms</label>
                                     <textarea class="form-control" id="symptoms" name="symptoms"></textarea>
                                 </div>
-                                
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -227,5 +216,9 @@
                     </form>
                 </div>
             </div>
+                        <% }  %>
+                        </div>
+        
+        
     </body>
-    <%- include('../includes/end.ejs') %></link>
+    <%- include('../includes/end.ejs') %>

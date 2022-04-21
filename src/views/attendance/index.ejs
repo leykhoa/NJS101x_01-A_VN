@@ -1,95 +1,94 @@
 <%- include('../includes/head.ejs') %>
 <body>
 	<%- include('../includes/navigation.ejs') %>
-	<div class="container-sm align-top">
+	<div class="container">
 		<h2 class="center">ATTENDANCE</h2>
 		<hr />
 		<% if (user) { %>
-		<div class="container">
-			<h5>
-				Hi, <b><%= user.name %></b>, please check infomation and click button
-				below to start your work
-			</h5>
-			<%- include('./onLeave') %>
-			<form
-				action="/attendance/start-working"
-				method="POST"
-				id="form-attendance"
-			>
-				<%- include('./startWorking') %>
-				<hr />
-			</form>
-			<form action="/manager/attendance" method="GET" id="form-manager"></form>
-			<button
-				type="submit"
-				class="btn btn-success <%= user.workStatus === true ? 'display-none' : '' %>"
-				form="form-attendance"
-			>
-				CHECK IN
-			</button>
-			<button
-				type="submit"
-				class="btn btn-danger <%= user.workStatus === false ? 'display-none' : '' %>"
-				formaction="/attendance/end-working"
-				form="form-attendance"
-			>
-				CHECK OUT
-			</button>
-			<button
-				class="btn btn-secondary"
-				type="button"
-				data-bs-toggle="modal"
-				data-bs-target="#onLeave"
-			>
-				On leave
-			</button>
-			<% if (user.isManager === true) { %>
-			<button class="btn btn-primary" type="submit" form="form-manager">
-				Confirm working hours
-			</button>
-			<% } %>
 
-			<button
-				class="btn btn-danger inline-block <%= req.query.denied !== 'no-select' ? 'display-none' : '' %>"
-			>
-				Please check the list of leave applications again, because some of the
-				days you applied for already exist or fall on a Saturday or Sunday or
-				select more than the allowed number of days
-			</button>
-			<button
-				class="btn btn-danger inline-block <%= req.query.lock !== 'locked' ? 'display-none' : '' %>"
-			>
-				Action denied! Please contact your manager
-			</button>
+		<h5>
+			Hi, <b><%= user.name %></b>, please check infomation and click button
+			below to start your work
+		</h5>
+		<%- include('./onLeave') %>
+		<form action="/attendance/start-working" method="POST" id="form-attendance">
+			<%- include('./startWorking') %>
+			<hr />
+		</form>
+		<form action="/manager/attendance" method="GET" id="form-manager"></form>
+		<button
+			type="submit"
+			class="btn btn-success <%= user.workStatus === true ? 'display-none' : '' %>"
+			form="form-attendance"
+		>
+			CHECK IN
+		</button>
+		<button
+			type="submit"
+			class="btn btn-danger <%= user.workStatus === false ? 'display-none' : '' %>"
+			formaction="/attendance/end-working"
+			form="form-attendance"
+		>
+			CHECK OUT
+		</button>
+		<button
+			class="btn btn-secondary"
+			type="button"
+			data-bs-toggle="modal"
+			data-bs-target="#onLeave"
+		>
+			On leave
+		</button>
+		<% if (user.isManager === true) { %>
+		<button
+			class="btn btn-primary"
+			type="submit"
+			form="form-manager"
+			style="margin-top: 5px"
+		>
+			Confirm working hours
+		</button>
+		<% } %>
 
-			<% if (user.missEndWorking === true) { %>
-			<div class="container center" style="color: red">
-				<h3>
-					You missed CHECK OUT of the previous day, please contact HR for help
-				</h3>
-			</div>
-			<% } %>
-			<div class="container">
-				<div class="row">
-					<div class="col-8"><%- include('./endWorking') %></div>
-					<% if (onLeaveList.length >0) { %>
-					<div class="col-4">
-						<br />
-						<div class="card-header">
-							<h4 class="center">List of registered leave</h4>
-						</div>
-						<% onLeaveList.forEach(item => { %>
-						<p>
-							Date: <%=item.date.toLocaleDateString('en-GB') %> -- Total time:
-							<%=item.day %> <i>day</i>
-						</p>
-						<% }) %>
-					</div>
-					<% } %>
-				</div>
-			</div>
+		<button
+			class="btn btn-danger inline-block <%= req.query.denied !== 'no-select' ? 'display-none' : '' %>"
+		>
+			Please check the list of leave applications again, because some of the
+			days you applied for already exist or fall on a Saturday or Sunday or
+			select more than the allowed number of days
+		</button>
+		<button
+			class="btn btn-danger inline-block <%= req.query.lock !== 'locked' ? 'display-none' : '' %>"
+		>
+			Action denied! Please contact your manager
+		</button>
+
+		<% if (user.missEndWorking === true) { %>
+		<div class="center" style="color: red">
+			<h3>
+				You missed CHECK OUT of the previous day, please contact HR for help
+			</h3>
 		</div>
 		<% } %>
+		<div class="row">
+			<div class="col-lg-8"><%- include('./endWorking') %></div>
+			<div class="col-lg-4">
+				<% if (onLeaveList.length >0) { %>
+				<div class="col">
+					<br />
+					<div class="card-header">
+						<h4 class="center">List of registered leave</h4>
+					</div>
+					<% onLeaveList.forEach(item => { %>
+					<p>
+						Date: <%=item.date.toLocaleDateString('en-GB') %> -- Total time:
+						<%=item.day %> <i>day</i>
+					</p>
+					<% }) %>
+				</div>
+				<% }} %>
+			</div>
+		</div>
 	</div>
 </body>
 <%- include('../includes/end.ejs') %>

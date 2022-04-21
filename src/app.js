@@ -3,6 +3,7 @@ const path = require('path');
 const app = express();
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
+require('dotenv').config();
 
 const User = require('./models/user');
 const Methods = require('./util/methods');

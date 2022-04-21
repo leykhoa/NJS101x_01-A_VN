@@ -2,8 +2,8 @@
 
 <body>
 	<%- include('../includes/navigation.ejs') %> <% if (user) { %>
-	<div class="container" style="max-width: 800px; padding: 50px">
-		<h3 class="center">Welcome to the information management</h3>
+	<div class="container" style="max-width: 800px; padding: 20px">
+		<h3 class="center">This is your information</h3>
 		<hr />
 		<div class="row g-0">
 			<div class="col-md-5">
@@ -113,7 +113,9 @@
 					>
 						<label for="image">Image </label>
 						<input type="file" name="image" id="image" />
-						<button type="submit" class="btn-primary">Save</button>
+						<button type="submit" class="btn-primary" style="margin-top: 5px">
+							Save
+						</button>
 					</form>
 				</div>
 				<% if (errorMessage) { %>
